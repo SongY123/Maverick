@@ -18,7 +18,7 @@ If you use Macos, you can install llvm by homebrew.
 ```shell
 brew install llvm
 ```
-Remember add llvm/bin folder to $PATH.
+Remember to add llvm/bin folder to $PATH.
 
 2. Install python requirements
 ```shell
@@ -32,11 +32,11 @@ conda install llvmlite
 ```
 
 ## Folder Structure
-* doc --> documents for maverick programming language
-* example --> Marverick Example Code(Marverick code files are ending with .m)
-* src/generator --> IR Generator
-* src/parser --> Antlr4 Generated Code
-
+* doc --> Documents for maverick programming language
+* example --> Marverick example code(Marverick code files are ending with .m)
+* src/generator --> IR generator
+* src/parser --> Antlr4 generated code
+* config.ini --> Project configuration file
 
 ## How to run
 
