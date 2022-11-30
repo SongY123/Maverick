@@ -8,6 +8,11 @@
 
 ## 1.4 Variable
 
+## 1.5 Input & Output
+### Input Function
+scan(a,b,c,...)
+### Output Function
+print(a,b,c,...)
 
 # 2.Parser
 

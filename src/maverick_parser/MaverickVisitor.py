@@ -1,3 +1,4 @@
+# Generated from /Users/songyang/Desktop/buaa/课程/程序设计语言/Maverick/antlr/Maverick.g4 by ANTLR 4.11.1
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .MaverickParser import MaverickParser
@@ -20,6 +21,21 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#stat.
     def visitStat(self, ctx:MaverickParser.StatContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#varinit.
+    def visitVarinit(self, ctx:MaverickParser.VarinitContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#funcdef.
+    def visitFuncdef(self, ctx:MaverickParser.FuncdefContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#localfuncdef.
+    def visitLocalfuncdef(self, ctx:MaverickParser.LocalfuncdefContext):
         return self.visitChildren(ctx)
 
 
@@ -190,6 +206,31 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#string.
     def visitString(self, ctx:MaverickParser.StringContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#myINT.
+    def visitMyINT(self, ctx:MaverickParser.MyINTContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#myHEX.
+    def visitMyHEX(self, ctx:MaverickParser.MyHEXContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#myFLOAT.
+    def visitMyFLOAT(self, ctx:MaverickParser.MyFLOATContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#printfFunction.
+    def visitPrintfFunction(self, ctx:MaverickParser.PrintfFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#scanfFunction.
+    def visitScanfFunction(self, ctx:MaverickParser.ScanfFunctionContext):
         return self.visitChildren(ctx)
 
 

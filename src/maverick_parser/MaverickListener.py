@@ -1,3 +1,4 @@
+# Generated from /Users/songyang/Desktop/buaa/课程/程序设计语言/Maverick/antlr/Maverick.g4 by ANTLR 4.11.1
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .MaverickParser import MaverickParser
@@ -31,6 +32,33 @@ class MaverickListener(ParseTreeListener):
 
     # Exit a parse tree produced by MaverickParser#stat.
     def exitStat(self, ctx:MaverickParser.StatContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#varinit.
+    def enterVarinit(self, ctx:MaverickParser.VarinitContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#varinit.
+    def exitVarinit(self, ctx:MaverickParser.VarinitContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#funcdef.
+    def enterFuncdef(self, ctx:MaverickParser.FuncdefContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#funcdef.
+    def exitFuncdef(self, ctx:MaverickParser.FuncdefContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#localfuncdef.
+    def enterLocalfuncdef(self, ctx:MaverickParser.LocalfuncdefContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#localfuncdef.
+    def exitLocalfuncdef(self, ctx:MaverickParser.LocalfuncdefContext):
         pass
 
 
@@ -337,6 +365,51 @@ class MaverickListener(ParseTreeListener):
 
     # Exit a parse tree produced by MaverickParser#string.
     def exitString(self, ctx:MaverickParser.StringContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#myINT.
+    def enterMyINT(self, ctx:MaverickParser.MyINTContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#myINT.
+    def exitMyINT(self, ctx:MaverickParser.MyINTContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#myHEX.
+    def enterMyHEX(self, ctx:MaverickParser.MyHEXContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#myHEX.
+    def exitMyHEX(self, ctx:MaverickParser.MyHEXContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#myFLOAT.
+    def enterMyFLOAT(self, ctx:MaverickParser.MyFLOATContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#myFLOAT.
+    def exitMyFLOAT(self, ctx:MaverickParser.MyFLOATContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#printfFunction.
+    def enterPrintfFunction(self, ctx:MaverickParser.PrintfFunctionContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#printfFunction.
+    def exitPrintfFunction(self, ctx:MaverickParser.PrintfFunctionContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#scanfFunction.
+    def enterScanfFunction(self, ctx:MaverickParser.ScanfFunctionContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#scanfFunction.
+    def exitScanfFunction(self, ctx:MaverickParser.ScanfFunctionContext):
         pass
 
 
