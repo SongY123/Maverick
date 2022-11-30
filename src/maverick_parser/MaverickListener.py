@@ -53,24 +53,6 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#localfuncdef.
-    def enterLocalfuncdef(self, ctx:MaverickParser.LocalfuncdefContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#localfuncdef.
-    def exitLocalfuncdef(self, ctx:MaverickParser.LocalfuncdefContext):
-        pass
-
-
-    # Enter a parse tree produced by MaverickParser#attnamelist.
-    def enterAttnamelist(self, ctx:MaverickParser.AttnamelistContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#attnamelist.
-    def exitAttnamelist(self, ctx:MaverickParser.AttnamelistContext):
-        pass
-
-
     # Enter a parse tree produced by MaverickParser#attrib.
     def enterAttrib(self, ctx:MaverickParser.AttribContext):
         pass
@@ -203,15 +185,6 @@ class MaverickListener(ParseTreeListener):
 
     # Exit a parse tree produced by MaverickParser#args.
     def exitArgs(self, ctx:MaverickParser.ArgsContext):
-        pass
-
-
-    # Enter a parse tree produced by MaverickParser#functiondef.
-    def enterFunctiondef(self, ctx:MaverickParser.FunctiondefContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#functiondef.
-    def exitFunctiondef(self, ctx:MaverickParser.FunctiondefContext):
         pass
 
 
@@ -365,6 +338,15 @@ class MaverickListener(ParseTreeListener):
 
     # Exit a parse tree produced by MaverickParser#string.
     def exitString(self, ctx:MaverickParser.StringContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#type.
+    def enterType(self, ctx:MaverickParser.TypeContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#type.
+    def exitType(self, ctx:MaverickParser.TypeContext):
         pass
 
 

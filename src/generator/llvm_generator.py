@@ -33,7 +33,7 @@ class MVisitor(MaverickVisitor):
         self.constants = 0
 
         func_name = 'main';
-        llvm_type = ir.FunctionType(nil, [])
+        llvm_type = ir.FunctionType(void, [])
         llvm_func = ir.Function(self.module, llvm_type, name=func_name)
         block = llvm_func.append_basic_block(name=func_name + '.entry')
         self.block_list.append(block)
@@ -98,10 +98,76 @@ class MVisitor(MaverickVisitor):
         self.need_load = need_load_cache
 
     def visitFunctiondef(self, ctx: MaverickParser.FunctiondefContext):
-        return super().visitFunctiondef(ctx)
+        """
+        funcdef:'function' funcname funcbody;
+        """
+        # funcname
+        func_name = ctx.getChild(1).getText()
+        if func_name in self.func_list:
+            raise FunctionNameDuplicate(func_name=func_name)
+        #
+        para_list = self.visit(ctx.getChild(2))  # func params
+        # 根据返回值，函数名称和参数生成llvm函数
+        type_list = []
+        for i in range(len(para_list)):
+            type_list.append(para_list[i]['type'])
+        llvm_type = ir.FunctionType(self.visit(ctx.getChild(0)), type_list)
+        llvm_func = ir.Function(self.module, llvm_type, name=func_name)
+        # 存储函数的变量
+        for i in range(len(para_list)):
+            llvm_func.args[i].name = para_list[i]['name']
+        # 存储函数的block
+        block = llvm_func.append_basic_block(name=func_name + '.entry')
+        self.block_list.append(block)
+        # 将函数加到func_list
+        self.func_list[func_name] = llvm_func
+        # 存储函数的builder
+        builder = ir.IRBuilder(block)
+        self.builder_list.append(builder)
+        # 进一层
+        self.cur_func = func_name
+        self.symbol_table.func_enter()
+        # 存储函数的变量
+        for i in range(len(para_list)):
+            mvar = builder.alloca(para_list[i]['type'])
+            builder.store(llvm_func.args[i], mvar)
+            self.symbol_table.insert_item(para_list[i]['name'], {'Type': para_list[i]['type'], 'Name': mvar})
+        # 处理函数body
+        self.visit(ctx.getChild(6))  # func body
+        # 处理完毕，退一层
+        self.cur_func = ''
+        self.block_list.pop()
+        self.builder_list.pop()
+        self.symbol_table.func_quit()
+        return
 
-    def visitLocalfuncdef(self, ctx: MaverickParser.LocalfuncdefContext):
-        return super().visitLocalfuncdef(ctx)
+    def visitFuncbody(self, ctx: MaverickParser.FuncbodyContext):
+        """
+        funcbody: '(' parlist? ')' block 'end';
+        """
+        if ctx.getChild(0).getText() == ')':
+            # if the function do no have params
+            return []
+        else:
+            # visit the param list
+            return self.visit(ctx.getChild(1))
+
+    def visitParlist(self, ctx: MaverickParser.ParlistContext):
+        """
+        return param list
+        """
+
+        return super().visitParlist(ctx)
+
+    def visitNamelist(self, ctx: MaverickParser.NamelistContext):
+        """
+        return name list
+        """
+        name_length = ctx.getChildCount();
+        name_list = []
+        for i in range(0, name_length, 2):
+            name_list.append(ctx.getChild(i).getText())
+        return name_list
 
     def visitExplist(self, ctx: MaverickParser.ExplistContext):
         exp_length = int((ctx.getChildCount() - 1) / 2 + 1)
@@ -113,9 +179,9 @@ class MVisitor(MaverickVisitor):
     def visitExp(self, ctx: MaverickParser.ExpContext):
         if ctx.getChild(0).getText() == 'nil':
             return {
-                'type': nil,
+                'type': void,
                 'const': False,
-                'name': ir.Constant(nil, None)
+                'name': ir.Constant(void, None)
             }
         elif ctx.getChild(0).getText() == 'false':
             return {
@@ -156,9 +222,9 @@ class MVisitor(MaverickVisitor):
                 }
         else:
             return {
-                'type': nil,
+                'type': void,
                 'const': False,
-                'name': ir.Constant(nil, None)
+                'name': ir.Constant(void, None)
             }
 
     def visitLaststat(self, ctx: MaverickParser.LaststatContext):

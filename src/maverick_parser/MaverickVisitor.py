@@ -34,16 +34,6 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#localfuncdef.
-    def visitLocalfuncdef(self, ctx:MaverickParser.LocalfuncdefContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MaverickParser#attnamelist.
-    def visitAttnamelist(self, ctx:MaverickParser.AttnamelistContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MaverickParser#attrib.
     def visitAttrib(self, ctx:MaverickParser.AttribContext):
         return self.visitChildren(ctx)
@@ -116,11 +106,6 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#args.
     def visitArgs(self, ctx:MaverickParser.ArgsContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MaverickParser#functiondef.
-    def visitFunctiondef(self, ctx:MaverickParser.FunctiondefContext):
         return self.visitChildren(ctx)
 
 
@@ -206,6 +191,11 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#string.
     def visitString(self, ctx:MaverickParser.StringContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#type.
+    def visitType(self, ctx:MaverickParser.TypeContext):
         return self.visitChildren(ctx)
 
 

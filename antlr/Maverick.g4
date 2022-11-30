@@ -18,28 +18,20 @@ stat
     | 'while' exp 'do' block 'end'
     | 'repeat' block 'until' exp
     | 'if' exp 'then' block ('elseif' exp 'then' block)* ('else' block)? 'end'
-    | 'for' NAME '=' exp ',' exp (',' exp)? 'do' block 'end'
+    | 'for' (type)? NAME '=' exp ',' exp (',' exp)? 'do' block 'end'
     | 'for' namelist 'in' explist 'do' block 'end'
     | funcdef
-    | localfuncdef
-    | 'local' attnamelist ('=' explist)?
     ;
 
 varinit
-    :varlist '=' explist
+    : (type)? varlist '=' explist
     ;
 
 funcdef
-    :'function' funcname funcbody
+    :'function' type funcname funcbody
     ;
 
-localfuncdef
-    :'local' 'function' NAME funcbody
-    ;
 
-attnamelist
-    : NAME attrib (',' NAME attrib)*
-    ;
 
 attrib
     : ('<' NAME '>')?
@@ -62,7 +54,7 @@ varlist
     ;
 
 namelist
-    : NAME (',' NAME)*
+    : type NAME (',' type NAME)*
     ;
 
 explist
@@ -74,7 +66,6 @@ exp
     | number
     | string
     | '...'
-    | functiondef
     | prefixexp
     | tableconstructor
     | <assoc=right> exp operatorPower exp
@@ -116,10 +107,6 @@ nameAndArgs
 
 args
     : '(' explist? ')' | tableconstructor | string
-    ;
-
-functiondef
-    : 'function' funcbody
     ;
 
 funcbody
@@ -181,6 +168,13 @@ string
     : NORMALSTRING | CHARSTRING | LONGSTRING
     ;
 
+type
+    : 'void'
+    | 'byte'
+    | 'boolean'
+    | 'int'
+    | 'float'
+    ;
 myINT : INT;
 myHEX : HEX;
 myFLOAT : FLOAT;

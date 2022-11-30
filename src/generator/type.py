@@ -1,6 +1,6 @@
 from llvmlite import ir
 
-nil = ir.VoidType()
+void = ir.VoidType()
 byte = ir.IntType(8)
 boolean = ir.IntType(1)
 int32 = ir.IntType(32)
