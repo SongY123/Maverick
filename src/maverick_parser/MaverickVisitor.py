@@ -29,6 +29,46 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by MaverickParser#whileblock.
+    def visitWhileblock(self, ctx:MaverickParser.WhileblockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#repeatblock.
+    def visitRepeatblock(self, ctx:MaverickParser.RepeatblockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#ifblock.
+    def visitIfblock(self, ctx:MaverickParser.IfblockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#ifconditionblock.
+    def visitIfconditionblock(self, ctx:MaverickParser.IfconditionblockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#elseifconditionblock.
+    def visitElseifconditionblock(self, ctx:MaverickParser.ElseifconditionblockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#elseconditionblock.
+    def visitElseconditionblock(self, ctx:MaverickParser.ElseconditionblockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#forequalblock.
+    def visitForequalblock(self, ctx:MaverickParser.ForequalblockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#forinblock.
+    def visitForinblock(self, ctx:MaverickParser.ForinblockContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by MaverickParser#funcdef.
     def visitFuncdef(self, ctx:MaverickParser.FuncdefContext):
         return self.visitChildren(ctx)
@@ -61,6 +101,11 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#explist.
     def visitExplist(self, ctx:MaverickParser.ExplistContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#condition.
+    def visitCondition(self, ctx:MaverickParser.ConditionContext):
         return self.visitChildren(ctx)
 
 

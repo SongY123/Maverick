@@ -44,6 +44,78 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by MaverickParser#whileblock.
+    def enterWhileblock(self, ctx:MaverickParser.WhileblockContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#whileblock.
+    def exitWhileblock(self, ctx:MaverickParser.WhileblockContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#repeatblock.
+    def enterRepeatblock(self, ctx:MaverickParser.RepeatblockContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#repeatblock.
+    def exitRepeatblock(self, ctx:MaverickParser.RepeatblockContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#ifblock.
+    def enterIfblock(self, ctx:MaverickParser.IfblockContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#ifblock.
+    def exitIfblock(self, ctx:MaverickParser.IfblockContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#ifconditionblock.
+    def enterIfconditionblock(self, ctx:MaverickParser.IfconditionblockContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#ifconditionblock.
+    def exitIfconditionblock(self, ctx:MaverickParser.IfconditionblockContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#elseifconditionblock.
+    def enterElseifconditionblock(self, ctx:MaverickParser.ElseifconditionblockContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#elseifconditionblock.
+    def exitElseifconditionblock(self, ctx:MaverickParser.ElseifconditionblockContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#elseconditionblock.
+    def enterElseconditionblock(self, ctx:MaverickParser.ElseconditionblockContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#elseconditionblock.
+    def exitElseconditionblock(self, ctx:MaverickParser.ElseconditionblockContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#forequalblock.
+    def enterForequalblock(self, ctx:MaverickParser.ForequalblockContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#forequalblock.
+    def exitForequalblock(self, ctx:MaverickParser.ForequalblockContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#forinblock.
+    def enterForinblock(self, ctx:MaverickParser.ForinblockContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#forinblock.
+    def exitForinblock(self, ctx:MaverickParser.ForinblockContext):
+        pass
+
+
     # Enter a parse tree produced by MaverickParser#funcdef.
     def enterFuncdef(self, ctx:MaverickParser.FuncdefContext):
         pass
@@ -104,6 +176,15 @@ class MaverickListener(ParseTreeListener):
 
     # Exit a parse tree produced by MaverickParser#explist.
     def exitExplist(self, ctx:MaverickParser.ExplistContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#condition.
+    def enterCondition(self, ctx:MaverickParser.ConditionContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#condition.
+    def exitCondition(self, ctx:MaverickParser.ConditionContext):
         pass
 
 

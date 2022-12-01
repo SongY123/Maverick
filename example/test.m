@@ -1,7 +1,7 @@
-function int sum(int a, int b)
-  a = 10
-  b = 20
-  return a*b
+if (1==2) then
+  printf("%d", 1)
+elseif (1==2) then
+  printf("%d", 2)
+else
+  printf("%d", 3)
 end
-
-printf("%d", sum(10,12))

@@ -1,12 +1,10 @@
 from antlr4 import *
-from llvmlite import ir
 from generator.parse_exception import *
 from generator.symbol_table import SymbolTable
 from generator.type import *
 from maverick_parser.MaverickLexer import MaverickLexer
 from maverick_parser.MaverickParser import MaverickParser
 from maverick_parser.MaverickVisitor import MaverickVisitor
-
 
 
 class MVisitor(MaverickVisitor):
@@ -57,6 +55,28 @@ class MVisitor(MaverickVisitor):
         with open(filename, "w") as f:
             f.write(repr(self.module))
 
+    def newBlock(self, block):
+        self.block_list.pop()
+        self.block_list.append(block)
+        self.builder_list.pop()
+        self.builder_list.append(ir.IRBuilder(block))
+        
+    def value2Boolean(self, var, not_equal=True):
+        builder = self.builder_list[-1]
+        operator = "==" if not_equal else "!="
+        return_dict = {
+            'type': boolean,
+            'const': False
+        }
+        if var['type'] == byte or var['type'] == int32:
+            return_dict["name"] = builder.icmp_signed(operator, var['name'],
+                                                      ir.Constant(var['type'], 0))
+            return return_dict
+        elif var['type'] == float:
+            return_dict["name"] = builder.fcmp_ordered(operator, var['name'], ir.Constant(float, 0))
+            return return_dict
+        return var
+
     def exprConvert(self, expr1, expr2):
         if expr1['type'] == expr2['type']:
             return expr1, expr2
@@ -72,12 +92,6 @@ class MVisitor(MaverickVisitor):
             'const': False
         }
         return expr1, expr2, return_dict
-
-    def newBlock(self, block):
-        self.block_list.pop()
-        self.block_list.append(block)
-        self.builder_list.pop()
-        self.builder_list.append(ir.IRBuilder(block))
 
     def visitStat(self, ctx: MaverickParser.StatContext):
         if ctx.getChild(0).getText() == ';':
@@ -178,6 +192,101 @@ class MVisitor(MaverickVisitor):
             }
             param_list.append(param)
         return param_list
+
+    def visitIfblock(self, ctx: MaverickParser.IfblockContext):
+        """
+        ifblock
+        : 'if' condition 'then' block ('elseif' condition 'then' block)* ('else' block)? 'end'
+        ;
+        """
+        cur_builder = self.builder_list[-1]
+        if_block = cur_builder.append_basic_block()
+        endif_block = cur_builder.append_basic_block()
+
+        cache = self.cur_endif_block
+        self.cur_endif_block = endif_block
+
+        cur_builder.branch(if_block)
+        self.newBlock(if_block)
+
+        for i in range(ctx.getChildCount()):
+            self.visit(ctx.getChild(i))
+
+        if not self.block_list[-1].is_terminated:
+            self.builder_list[-1].branch(endif_block)
+        self.cur_endif_block = cache
+        self.newBlock(endif_block)
+
+    def visitIfconditionblock(self, ctx: MaverickParser.IfconditionblockContext):
+        self.symbol_table.func_enter()
+        cur_builder = self.builder_list[-1]
+        true_block = cur_builder.append_basic_block()
+        false_block = cur_builder.append_basic_block()
+
+        cur_builder.cbranch(self.visit(ctx.getChild(1))['name'], true_block, false_block)
+        self.newBlock(true_block)
+        self.visit(ctx.getChild(3))
+
+        if not self.block_list[-1].is_terminated:
+            self.builder_list[-1].branch(self.cur_endif_block)
+        self.newBlock(false_block)
+        self.symbol_table.func_quit()
+
+    def visitElseifconditionblock(self, ctx: MaverickParser.ElseifconditionblockContext):
+        self.symbol_table.func_enter()
+        cur_builder = self.builder_list[-1]
+        true_block = cur_builder.append_basic_block()
+        false_block = cur_builder.append_basic_block()
+
+        cur_builder.cbranch(self.visit(ctx.getChild(1))['name'], true_block, false_block)
+        self.newBlock(true_block)
+        self.visit(ctx.getChild(3))
+
+        if not self.block_list[-1].is_terminated:
+            self.builder_list[-1].branch(self.cur_endif_block)
+        self.newBlock(false_block)
+        self.symbol_table.func_quit()
+
+    def visitElseconditionblock(self, ctx: MaverickParser.ElseconditionblockContext):
+        self.symbol_table.func_enter()
+        self.visit(ctx.getChild(1))
+        self.symbol_table.func_quit()
+
+    def visitCondition(self, ctx: MaverickParser.ConditionContext):
+        return self.value2Boolean(self.visit(ctx.getChild(0)), False)
+
+    def visitOr_expr(self, ctx: MaverickParser.Or_exprContext):
+        # or
+        expr_left = self.value2Boolean(self.visit(ctx.getChild(0)), False)
+        expr_right = self.value2Boolean(self.visit(ctx.getChild(2)), False)
+        builder = self.builder_list[-1]
+        return {
+            'type': expr_left['type'],
+            'const': False,
+            'name': builder.or_(expr_left['name'], expr_right['name'])
+        }
+
+    def visitAnd_expr(self, ctx: MaverickParser.And_exprContext):
+        # and
+        expr_left = self.value2Boolean(self.visit(ctx.getChild(0)), False)
+        expr_right = self.value2Boolean(self.visit(ctx.getChild(2)), False)
+        builder = self.builder_list[-1]
+        return {
+            'type': expr_left['type'],
+            'const': False,
+            'name': builder.and_(expr_left['name'], expr_right['name'])
+        }
+
+    def visitComp_expr(self, ctx: MaverickParser.Comp_exprContext):
+        # comparison '<' | '>' | '<=' | '>=' | '!=' | '==';
+        expr_left, expr_right = self.exprConvert(self.visit(ctx.getChild(0)), self.visit(ctx.getChild(2)))
+        builder = self.builder_list[-1]
+        operator = ctx.getChild(1).getText()
+        return {
+            'type': expr_left['type'],
+            'const': False,
+            'name': builder.icmp_signed(operator, expr_left['name'], expr_right['name'])
+        }
 
     def visitExplist(self, ctx: MaverickParser.ExplistContext):
         exp_length = int((ctx.getChildCount() - 1) / 2 + 1)

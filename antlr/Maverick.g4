@@ -14,17 +14,48 @@ stat
     | functioncall
     | label
     | 'break'
-    | 'do' block 'end'
-    | 'while' exp 'do' block 'end'
-    | 'repeat' block 'until' exp
-    | 'if' exp 'then' block ('elseif' exp 'then' block)* ('else' block)? 'end'
-    | 'for' (type)? NAME '=' exp ',' exp (',' exp)? 'do' block 'end'
-    | 'for' namelist 'in' explist 'do' block 'end'
+    | whileblock
+    | repeatblock
+    | ifblock
+    | forequalblock
+    | forinblock
     | funcdef
     ;
 
 varinit
     : (type)? varlist '=' explist
+    ;
+
+whileblock
+    : 'while' condition 'do' block 'end'
+    ;
+
+repeatblock
+    : 'repeat' block 'until' condition
+    ;
+
+ifblock
+    : ifconditionblock (elseifconditionblock)* (elseconditionblock)? 'end'
+    ;
+
+ifconditionblock
+    : 'if' condition 'then' block
+    ;
+
+elseifconditionblock
+    : 'elseif' condition 'then' block
+    ;
+
+elseconditionblock
+    : 'else' block
+    ;
+
+forequalblock
+    : 'for' (type)? NAME '=' exp ',' exp (',' exp)? 'do' block 'end'
+    ;
+
+forinblock
+    : 'for' namelist 'in' explist 'do' block 'end'
     ;
 
 funcdef
@@ -53,6 +84,10 @@ namelist
 
 explist
     : (exp ',')* exp
+    ;
+
+condition
+    : exp
     ;
 
 exp
@@ -137,7 +172,7 @@ operatorAnd
 	: 'and';
 
 operatorComparison
-	: '<' | '>' | '<=' | '>=' | '~=' | '==';
+	: '<' | '>' | '<=' | '>=' | '!=' | '==';
 
 operatorStrcat
 	: '..';
