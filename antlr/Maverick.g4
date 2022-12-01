@@ -28,17 +28,11 @@ varinit
     ;
 
 funcdef
-    :'function' type funcname funcbody
-    ;
-
-
-
-attrib
-    : ('<' NAME '>')?
+    : 'function' type funcname '(' parlist? ')' funcbody
     ;
 
 laststat
-    : 'return' explist? | 'break' | 'continue' ';'?
+    : 'return' exp? | 'break' | 'continue' ';'?
     ;
 
 label
@@ -62,31 +56,33 @@ explist
     ;
 
 exp
-    : 'nil' | 'false' | 'true'
-    | number
-    | string
-    | '...'
-    | prefixexp
-    | tableconstructor
-    | <assoc=right> exp operatorPower exp
-    | operatorUnary exp
-    | exp operatorMulDivMod exp
-    | exp operatorAddSub exp
-    | <assoc=right> exp operatorStrcat exp
-    | exp operatorComparison exp
-    | exp operatorAnd exp
-    | exp operatorOr exp
-    | exp operatorBitwise exp
-    ;
-
-prefixexp
-    : varOrExp nameAndArgs*
+    : 'nil'                                 # nil_expr
+    | ('false' | 'true')                    # truefalse_expr
+    | number                                # number_expr
+    | string                                # string_expr
+    | '...'                                 # more_expr
+    | functioncall                          # functioncall_expr
+    | varOrExp                              # varorexp_expr
+    | tableconstructor                      # tableconstructor_expr
+    | <assoc=right> exp operatorPower exp   # power_expr
+    | operatorUnary exp                     # unary_expr
+    | exp operatorMulDivMod exp             # muldivmod_expr
+    | exp operatorAddSub exp                # addsub_expr
+    | <assoc=right> exp operatorStrcat exp  # strcat_expr
+    | exp operatorComparison exp            # comp_expr
+    | exp operatorAnd exp                   # and_expr
+    | exp operatorOr exp                    # or_expr
+    | exp operatorBitwise exp               # bitwise_expr
     ;
 
 functioncall
     : printfFunction
     | scanfFunction
-    | varOrExp nameAndArgs+
+    | selffunctioncall
+    ;
+
+selffunctioncall
+    : varOrExp nameAndArgs+
     ;
 
 varOrExp
@@ -110,9 +106,10 @@ args
     ;
 
 funcbody
-    : '(' parlist? ')' block 'end'
+    : block 'end'
     ;
 
+// TODO 可变参数
 parlist
     : namelist (',' '...')? | '...'
     ;
@@ -149,7 +146,7 @@ operatorAddSub
 	: '+' | '-';
 
 operatorMulDivMod
-	: '*' | '/' | '%' | '//';
+	: '*' | '/' | '%';
 
 operatorBitwise
 	: '&' | '|' | '~' | '<<' | '>>';

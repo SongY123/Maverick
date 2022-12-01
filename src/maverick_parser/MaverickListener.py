@@ -53,15 +53,6 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#attrib.
-    def enterAttrib(self, ctx:MaverickParser.AttribContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#attrib.
-    def exitAttrib(self, ctx:MaverickParser.AttribContext):
-        pass
-
-
     # Enter a parse tree produced by MaverickParser#laststat.
     def enterLaststat(self, ctx:MaverickParser.LaststatContext):
         pass
@@ -116,21 +107,156 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#exp.
-    def enterExp(self, ctx:MaverickParser.ExpContext):
+    # Enter a parse tree produced by MaverickParser#tableconstructor_expr.
+    def enterTableconstructor_expr(self, ctx:MaverickParser.Tableconstructor_exprContext):
         pass
 
-    # Exit a parse tree produced by MaverickParser#exp.
-    def exitExp(self, ctx:MaverickParser.ExpContext):
+    # Exit a parse tree produced by MaverickParser#tableconstructor_expr.
+    def exitTableconstructor_expr(self, ctx:MaverickParser.Tableconstructor_exprContext):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#prefixexp.
-    def enterPrefixexp(self, ctx:MaverickParser.PrefixexpContext):
+    # Enter a parse tree produced by MaverickParser#strcat_expr.
+    def enterStrcat_expr(self, ctx:MaverickParser.Strcat_exprContext):
         pass
 
-    # Exit a parse tree produced by MaverickParser#prefixexp.
-    def exitPrefixexp(self, ctx:MaverickParser.PrefixexpContext):
+    # Exit a parse tree produced by MaverickParser#strcat_expr.
+    def exitStrcat_expr(self, ctx:MaverickParser.Strcat_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#nil_expr.
+    def enterNil_expr(self, ctx:MaverickParser.Nil_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#nil_expr.
+    def exitNil_expr(self, ctx:MaverickParser.Nil_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#functioncall_expr.
+    def enterFunctioncall_expr(self, ctx:MaverickParser.Functioncall_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#functioncall_expr.
+    def exitFunctioncall_expr(self, ctx:MaverickParser.Functioncall_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#varorexp_expr.
+    def enterVarorexp_expr(self, ctx:MaverickParser.Varorexp_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#varorexp_expr.
+    def exitVarorexp_expr(self, ctx:MaverickParser.Varorexp_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#comp_expr.
+    def enterComp_expr(self, ctx:MaverickParser.Comp_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#comp_expr.
+    def exitComp_expr(self, ctx:MaverickParser.Comp_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#addsub_expr.
+    def enterAddsub_expr(self, ctx:MaverickParser.Addsub_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#addsub_expr.
+    def exitAddsub_expr(self, ctx:MaverickParser.Addsub_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#power_expr.
+    def enterPower_expr(self, ctx:MaverickParser.Power_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#power_expr.
+    def exitPower_expr(self, ctx:MaverickParser.Power_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#more_expr.
+    def enterMore_expr(self, ctx:MaverickParser.More_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#more_expr.
+    def exitMore_expr(self, ctx:MaverickParser.More_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#string_expr.
+    def enterString_expr(self, ctx:MaverickParser.String_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#string_expr.
+    def exitString_expr(self, ctx:MaverickParser.String_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#unary_expr.
+    def enterUnary_expr(self, ctx:MaverickParser.Unary_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#unary_expr.
+    def exitUnary_expr(self, ctx:MaverickParser.Unary_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#bitwise_expr.
+    def enterBitwise_expr(self, ctx:MaverickParser.Bitwise_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#bitwise_expr.
+    def exitBitwise_expr(self, ctx:MaverickParser.Bitwise_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#and_expr.
+    def enterAnd_expr(self, ctx:MaverickParser.And_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#and_expr.
+    def exitAnd_expr(self, ctx:MaverickParser.And_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#or_expr.
+    def enterOr_expr(self, ctx:MaverickParser.Or_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#or_expr.
+    def exitOr_expr(self, ctx:MaverickParser.Or_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#muldivmod_expr.
+    def enterMuldivmod_expr(self, ctx:MaverickParser.Muldivmod_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#muldivmod_expr.
+    def exitMuldivmod_expr(self, ctx:MaverickParser.Muldivmod_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#truefalse_expr.
+    def enterTruefalse_expr(self, ctx:MaverickParser.Truefalse_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#truefalse_expr.
+    def exitTruefalse_expr(self, ctx:MaverickParser.Truefalse_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#number_expr.
+    def enterNumber_expr(self, ctx:MaverickParser.Number_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#number_expr.
+    def exitNumber_expr(self, ctx:MaverickParser.Number_exprContext):
         pass
 
 
@@ -140,6 +266,15 @@ class MaverickListener(ParseTreeListener):
 
     # Exit a parse tree produced by MaverickParser#functioncall.
     def exitFunctioncall(self, ctx:MaverickParser.FunctioncallContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#selffunctioncall.
+    def enterSelffunctioncall(self, ctx:MaverickParser.SelffunctioncallContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#selffunctioncall.
+    def exitSelffunctioncall(self, ctx:MaverickParser.SelffunctioncallContext):
         pass
 
 

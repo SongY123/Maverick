@@ -57,6 +57,20 @@ class MVisitor(MaverickVisitor):
         with open(filename, "w") as f:
             f.write(repr(self.module))
 
+    def exprConvert(self, expr1, expr2):
+        if expr1['type'] == expr2['type']:
+            return expr1, expr2
+        else:
+            raise TypeMisatchException(expr1, expr2)
+        return expr1, expr2
+    def get_return_dict(self, ctx):
+        expr1, expr2 = self.exprConvert(self.visit(ctx.getChild(0)), self.visit(ctx.getChild(2)))
+        return_dict = {
+            'type': expr1['type'],
+            'const': False
+        }
+        return expr1, expr2, return_dict
+
     def newBlock(self, block):
         self.block_list.pop()
         self.block_list.append(block)
@@ -71,6 +85,17 @@ class MVisitor(MaverickVisitor):
             print(funcname)
             self.visit(ctx.getChild(2))
         return super().visitStat(ctx)
+
+    def visitType(self, ctx: MaverickParser.TypeContext):
+        if ctx.getText() == 'byte':
+            return byte
+        if ctx.getText() == 'boolean':
+            return boolean
+        if ctx.getText() == 'int':
+            return int32
+        if ctx.getText() == 'float':
+            return float
+        return void
 
     def visitVarinit(self, ctx: MaverickParser.VarinitContext):
         varlist_ctx = ctx.getChild(0)
@@ -97,77 +122,60 @@ class MVisitor(MaverickVisitor):
         super().visitVarinit(ctx)
         self.need_load = need_load_cache
 
-    def visitFunctiondef(self, ctx: MaverickParser.FunctiondefContext):
+    def visitFuncdef(self, ctx: MaverickParser.FuncdefContext):
         """
-        funcdef:'function' funcname funcbody;
+        funcdef: 'function' type funcname '(' parlist? ')' funcbody
         """
         # funcname
-        func_name = ctx.getChild(1).getText()
+        func_name = ctx.getChild(2).getText()
         if func_name in self.func_list:
-            raise FunctionNameDuplicate(func_name=func_name)
-        #
-        para_list = self.visit(ctx.getChild(2))  # func params
-        # 根据返回值，函数名称和参数生成llvm函数
+            raise FunctionNameDuplicateException(func_name=func_name)
+        return_type = self.visit(ctx.getChild(1))
+        # func params
+        para_list = self.visit(ctx.getChild(4))
         type_list = []
         for i in range(len(para_list)):
             type_list.append(para_list[i]['type'])
-        llvm_type = ir.FunctionType(self.visit(ctx.getChild(0)), type_list)
+        llvm_type = ir.FunctionType(return_type, type_list)
         llvm_func = ir.Function(self.module, llvm_type, name=func_name)
-        # 存储函数的变量
         for i in range(len(para_list)):
             llvm_func.args[i].name = para_list[i]['name']
-        # 存储函数的block
         block = llvm_func.append_basic_block(name=func_name + '.entry')
         self.block_list.append(block)
-        # 将函数加到func_list
         self.func_list[func_name] = llvm_func
-        # 存储函数的builder
         builder = ir.IRBuilder(block)
         self.builder_list.append(builder)
-        # 进一层
         self.cur_func = func_name
         self.symbol_table.func_enter()
-        # 存储函数的变量
         for i in range(len(para_list)):
             mvar = builder.alloca(para_list[i]['type'])
             builder.store(llvm_func.args[i], mvar)
             self.symbol_table.insert_item(para_list[i]['name'], {'Type': para_list[i]['type'], 'Name': mvar})
-        # 处理函数body
-        self.visit(ctx.getChild(6))  # func body
-        # 处理完毕，退一层
+        self.visit(ctx.getChild(ctx.getChildCount() - 1))  # funcbody
         self.cur_func = ''
         self.block_list.pop()
         self.builder_list.pop()
         self.symbol_table.func_quit()
-        return
-
-    def visitFuncbody(self, ctx: MaverickParser.FuncbodyContext):
-        """
-        funcbody: '(' parlist? ')' block 'end';
-        """
-        if ctx.getChild(0).getText() == ')':
-            # if the function do no have params
-            return []
-        else:
-            # visit the param list
-            return self.visit(ctx.getChild(1))
 
     def visitParlist(self, ctx: MaverickParser.ParlistContext):
         """
         return param list
         """
-
-        return super().visitParlist(ctx)
+        return self.visit(ctx.getChild(0))
 
     def visitNamelist(self, ctx: MaverickParser.NamelistContext):
         """
         return name list
         """
-        name_length = ctx.getChildCount();
-        name_list = []
-        for i in range(0, name_length, 2):
-            name_list.append(ctx.getChild(i).getText())
-        return name_list
+        length = ctx.getChildCount()
+        param_list = []
+        for i in range(0, length, 3):
+            param = {
+                'type': self.visit(ctx.getChild(i)),
+                'name': ctx.getChild(i+1).getText()
+            }
+            param_list.append(param)
+        return param_list
 
     def visitExplist(self, ctx: MaverickParser.ExplistContext):
         exp_length = int((ctx.getChildCount() - 1) / 2 + 1)
@@ -176,14 +184,15 @@ class MVisitor(MaverickVisitor):
             explist.append(self.visit(ctx.getChild(2 * i)))
         return explist
 
-    def visitExp(self, ctx: MaverickParser.ExpContext):
-        if ctx.getChild(0).getText() == 'nil':
-            return {
-                'type': void,
-                'const': False,
-                'name': ir.Constant(void, None)
-            }
-        elif ctx.getChild(0).getText() == 'false':
+    def visitNil_expr(self, ctx: MaverickParser.Nil_exprContext):
+        return {
+            'type': void,
+            'const': False,
+            'name': ir.Constant(void, None)
+        }
+
+    def visitTruefalse_expr(self, ctx: MaverickParser.Truefalse_exprContext):
+        if ctx.getChild(0).getText() == 'false':
             return {
                 'type': boolean,
                 'const': False,
@@ -195,10 +204,25 @@ class MVisitor(MaverickVisitor):
                 'const': False,
                 'name': ir.Constant(boolean, 1)
             }
-        return super().visitExp(ctx)
+
+    def visitMuldivmod_expr(self, ctx: MaverickParser.Muldivmod_exprContext):
+        builder = self.builder_list[-1]
+        expr1, expr2, return_dict = self.get_return_dict(ctx)
+        operator = ctx.getChild(1).getText()
+        if operator == '*':
+            return_dict["name"] = builder.mul(expr1['name'], expr2['name'])
+        elif operator == '/':
+            return_dict["name"] = builder.sdiv(expr1['name'], expr2['name'])
+        elif operator == '%':
+            return_dict["name"] = builder.srem(expr1['name'], expr2['name'])
+        return return_dict
 
     def visitVar(self, ctx: MaverickParser.VarContext):
         id = ctx.getText()
+        if self.func_list.get(id) is not None:
+            return {
+                'name': id
+            }
         if not self.symbol_table.has_item(id):
             return {
                 'type': int32,
@@ -228,7 +252,21 @@ class MVisitor(MaverickVisitor):
             }
 
     def visitLaststat(self, ctx: MaverickParser.LaststatContext):
-        return super().visitLaststat(ctx)
+        if ctx.getChild(0).getText() == 'return':
+            if (ctx.getChildCount() == 1):
+                ret = self.builder_list[-1].ret_void()
+            else:
+                explist = self.visit(ctx.getChild(1))
+                ret = self.builder_list[-1].ret(explist['name'])
+            return {
+                'type': void,
+                'const': False,
+                'name': ret
+            }
+        elif ctx.getChild(0).getText() == 'break':
+            return
+        elif ctx.getChild(0).getText() == 'continue':
+            return
 
     def visitMyINT(self, ctx: MaverickParser.MyINTContext):
         return {
@@ -268,6 +306,33 @@ class MVisitor(MaverickVisitor):
             'name': ret
         }
 
+    def visitSelffunctioncall(self, ctx: MaverickParser.SelffunctioncallContext):
+        func_name = self.visit(ctx.getChild(0))['name']
+        func = self.func_list[func_name]
+        args = self.visit(ctx.getChild(1))
+        builder = self.builder_list[-1]
+        arg_list = []
+        for arg in args:
+            arg_list.append(arg['name'])
+        return {
+            'type': func.function_type.return_type,
+            'name': builder.call(func, arg_list)
+        }
+
+    def visitVarOrExp(self, ctx: MaverickParser.VarOrExpContext):
+         return self.visit(ctx.getChild(0))
+
+    def visitNameAndArgs(self, ctx: MaverickParser.NameAndArgsContext):
+        if ctx.getChild(0).getText() != ':':
+            return self.visit(ctx.getChild(0))
+
+    def visitArgs(self, ctx: MaverickParser.ArgsContext):
+        if ctx.getChild(0).getText() == '(':
+            if ctx.getChild(1).getText() == ')':
+                return []
+            else:
+                return self.visit(ctx.getChild(1))
+
     def visitPrintfFunction(self, ctx: MaverickParser.PrintfFunctionContext):
         printf = self.func_list['printf']
         builder = self.builder_list[-1]
@@ -275,7 +340,8 @@ class MVisitor(MaverickVisitor):
         arg_list = [builder.gep(self.visit(ctx.getChild(2))['name'], [zero, zero], inbounds=True)]
         length = ctx.getChildCount()
         for i in range(4, length - 1, 2):
-            arg_list.append(self.visit(ctx.getChild(i))['name'])
+            var_expr = self.visit(ctx.getChild(i))
+            arg_list.append(var_expr['name'])
         return {
             'type': int32,
             'name': builder.call(printf, arg_list)

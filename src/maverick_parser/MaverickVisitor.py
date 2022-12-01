@@ -34,11 +34,6 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#attrib.
-    def visitAttrib(self, ctx:MaverickParser.AttribContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MaverickParser#laststat.
     def visitLaststat(self, ctx:MaverickParser.LaststatContext):
         return self.visitChildren(ctx)
@@ -69,18 +64,98 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#exp.
-    def visitExp(self, ctx:MaverickParser.ExpContext):
+    # Visit a parse tree produced by MaverickParser#tableconstructor_expr.
+    def visitTableconstructor_expr(self, ctx:MaverickParser.Tableconstructor_exprContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#prefixexp.
-    def visitPrefixexp(self, ctx:MaverickParser.PrefixexpContext):
+    # Visit a parse tree produced by MaverickParser#strcat_expr.
+    def visitStrcat_expr(self, ctx:MaverickParser.Strcat_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#nil_expr.
+    def visitNil_expr(self, ctx:MaverickParser.Nil_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#functioncall_expr.
+    def visitFunctioncall_expr(self, ctx:MaverickParser.Functioncall_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#varorexp_expr.
+    def visitVarorexp_expr(self, ctx:MaverickParser.Varorexp_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#comp_expr.
+    def visitComp_expr(self, ctx:MaverickParser.Comp_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#addsub_expr.
+    def visitAddsub_expr(self, ctx:MaverickParser.Addsub_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#power_expr.
+    def visitPower_expr(self, ctx:MaverickParser.Power_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#more_expr.
+    def visitMore_expr(self, ctx:MaverickParser.More_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#string_expr.
+    def visitString_expr(self, ctx:MaverickParser.String_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#unary_expr.
+    def visitUnary_expr(self, ctx:MaverickParser.Unary_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#bitwise_expr.
+    def visitBitwise_expr(self, ctx:MaverickParser.Bitwise_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#and_expr.
+    def visitAnd_expr(self, ctx:MaverickParser.And_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#or_expr.
+    def visitOr_expr(self, ctx:MaverickParser.Or_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#muldivmod_expr.
+    def visitMuldivmod_expr(self, ctx:MaverickParser.Muldivmod_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#truefalse_expr.
+    def visitTruefalse_expr(self, ctx:MaverickParser.Truefalse_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#number_expr.
+    def visitNumber_expr(self, ctx:MaverickParser.Number_exprContext):
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by MaverickParser#functioncall.
     def visitFunctioncall(self, ctx:MaverickParser.FunctioncallContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#selffunctioncall.
+    def visitSelffunctioncall(self, ctx:MaverickParser.SelffunctioncallContext):
         return self.visitChildren(ctx)
 
 
