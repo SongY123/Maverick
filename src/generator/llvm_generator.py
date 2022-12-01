@@ -249,6 +249,8 @@ class MVisitor(MaverickVisitor):
         cond_block = cur_builder.append_basic_block()
         body_block = cur_builder.append_basic_block()
         endwhile_block = cur_builder.append_basic_block()
+        self.ctr_cond_list.append(cond_block)
+        self.ctr_end_list.append(endwhile_block)
 
         cur_builder.branch(cond_block)
         self.newBlock(cond_block)
@@ -258,9 +260,14 @@ class MVisitor(MaverickVisitor):
         self.newBlock(body_block)
         self.visit(ctx.getChild(2))
 
-        self.builder_list[-1].branch(cond_block)
+        try:
+            self.builder_list[-1].branch(cond_block)
+        except AssertionError:
+            print("Branch optimize")
 
         self.newBlock(endwhile_block)
+        self.ctr_cond_list.pop(-1)
+        self.ctr_end_list.pop(-1)
         self.symbol_table.func_quit()
 
 
