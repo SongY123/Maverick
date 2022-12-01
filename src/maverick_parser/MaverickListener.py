@@ -593,6 +593,24 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by MaverickParser#break.
+    def enterBreak(self, ctx:MaverickParser.BreakContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#break.
+    def exitBreak(self, ctx:MaverickParser.BreakContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#continue.
+    def enterContinue(self, ctx:MaverickParser.ContinueContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#continue.
+    def exitContinue(self, ctx:MaverickParser.ContinueContext):
+        pass
+
+
     # Enter a parse tree produced by MaverickParser#printfFunction.
     def enterPrintfFunction(self, ctx:MaverickParser.PrintfFunctionContext):
         pass

@@ -14,7 +14,7 @@ stat
     | varassign
     | functioncall
     | label
-    | 'break'
+    | break
     | whileblock
     | repeatblock
     | ifblock
@@ -68,7 +68,7 @@ funcdef
     ;
 
 laststat
-    : 'return' exp? | 'break' | 'continue' ';'?
+    : 'return' exp? | break | continue ';'?
     ;
 
 label
@@ -211,6 +211,8 @@ type
 myINT : INT;
 myHEX : HEX;
 myFLOAT : FLOAT;
+break : 'break';
+continue : 'continue';
 
 // LEXER
 

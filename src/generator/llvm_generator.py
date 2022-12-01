@@ -21,7 +21,10 @@ class MVisitor(MaverickVisitor):
         self.builder_list = []
         # used to store function, key: function name, value: ir.Function
         self.func_list = dict()
-
+        # used to store control condition block
+        self.ctr_cond_list = []
+        # used to store control end block
+        self.ctr_end_list = []
         self.cur_endif_block = None
 
         self.symbol_table = SymbolTable()
@@ -93,6 +96,9 @@ class MVisitor(MaverickVisitor):
             'const': False
         }
         return expr1, expr2, return_dict
+
+    def visitBlock(self, ctx: MaverickParser.BlockContext):
+        return super().visitBlock(ctx)
 
     def visitStat(self, ctx: MaverickParser.StatContext):
         if ctx.getChild(0).getText() == ';':
@@ -211,6 +217,8 @@ class MVisitor(MaverickVisitor):
         cond_block = cur_builder.append_basic_block()
         body_block = cur_builder.append_basic_block()
         endwhile_block = cur_builder.append_basic_block()
+        self.ctr_cond_list.append(cond_block)
+        self.ctr_end_list.append(endwhile_block)
 
         cur_builder.branch(cond_block)
         self.newBlock(cond_block)
@@ -220,9 +228,14 @@ class MVisitor(MaverickVisitor):
         self.newBlock(body_block)
         self.visit(ctx.getChild(3))
 
-        self.builder_list[-1].branch(cond_block)
+        try:
+            self.builder_list[-1].branch(cond_block)
+        except AssertionError:
+            print("Branch optimize")
 
         self.newBlock(endwhile_block)
+        self.ctr_cond_list.pop(-1)
+        self.ctr_end_list.pop(-1)
         self.symbol_table.func_quit()
 
     def visitRepeatblock(self, ctx: MaverickParser.RepeatblockContext):
@@ -315,6 +328,14 @@ class MVisitor(MaverickVisitor):
         self.symbol_table.func_enter()
         self.visit(ctx.getChild(1))
         self.symbol_table.func_quit()
+
+    def visitBreak(self, ctx: MaverickParser.BreakContext):
+        target_block = self.ctr_end_list[-1]
+        self.builder_list[-1].branch(target_block)
+
+    def visitContinue(self, ctx: MaverickParser.ContinueContext):
+        target_block = self.ctr_cond_list[-1]
+        self.builder_list[-1].branch(target_block)
 
     def visitCondition(self, ctx: MaverickParser.ConditionContext):
         return self.value2Boolean(self.visit(ctx.getChild(0)), False)
@@ -465,9 +486,9 @@ class MVisitor(MaverickVisitor):
                 'name': ret
             }
         elif ctx.getChild(0).getText() == 'break':
-            return
+            self.visit(ctx.getChild(0))
         elif ctx.getChild(0).getText() == 'continue':
-            return
+            self.visit(ctx.getChild(0))
 
     def visitMyINT(self, ctx: MaverickParser.MyINTContext):
         return {

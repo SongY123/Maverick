@@ -334,6 +334,16 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by MaverickParser#break.
+    def visitBreak(self, ctx:MaverickParser.BreakContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#continue.
+    def visitContinue(self, ctx:MaverickParser.ContinueContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by MaverickParser#printfFunction.
     def visitPrintfFunction(self, ctx:MaverickParser.PrintfFunctionContext):
         return self.visitChildren(ctx)
