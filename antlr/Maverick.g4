@@ -11,6 +11,7 @@ block
 stat
     : ';'
     | varinit
+    | varassign
     | functioncall
     | label
     | 'break'
@@ -23,7 +24,11 @@ stat
     ;
 
 varinit
-    : (type)? varlist '=' explist
+    : type varlist '=' explist
+    ;
+
+varassign
+    : var '=' exp
     ;
 
 whileblock
@@ -114,10 +119,6 @@ functioncall
     : printfFunction
     | scanfFunction
     | selffunctioncall
-    ;
-
-selffunctioncall
-    : varOrExp nameAndArgs+
     ;
 
 varOrExp
@@ -326,3 +327,7 @@ printfFunction
 scanfFunction
 	  : 'scanf' '(' string (',' (var | exp))* ')'
 	  ;
+
+selffunctioncall
+    : varOrExp nameAndArgs+
+    ;

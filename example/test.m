@@ -1,7 +1,6 @@
-if (1==2) then
-  printf("%d", 1)
-elseif (1==2) then
-  printf("%d", 2)
-else
-  printf("%d", 3)
+int i = 0
+while i < 10
+do
+  i = i + 1
+  printf("%d\n", i)
 end

@@ -77,12 +77,13 @@ class MVisitor(MaverickVisitor):
             return return_dict
         return var
 
-    def exprConvert(self, expr1, expr2):
-        if expr1['type'] == expr2['type']:
-            return expr1, expr2
+    def exprConvert(self, expr1, expr_right):
+        if expr1['type'] == expr_right['type']:
+            return expr1, expr_right
         else:
-            raise TypeMisatchException(expr1, expr2)
-        return expr1, expr2
+            raise TypeMisatchException(expr1, expr_right)
+        return expr1, expr_right
+
     def get_return_dict(self, ctx):
         expr_left = self.visit(ctx.getChild(0))
         expr_right = self.visit(ctx.getChild(2))
@@ -114,9 +115,9 @@ class MVisitor(MaverickVisitor):
         return void
 
     def visitVarinit(self, ctx: MaverickParser.VarinitContext):
-        varlist_ctx = ctx.getChild(0)
+        varlist_ctx = ctx.getChild(1)
+        explist_ctx = ctx.getChild(3)
         var_length = int((varlist_ctx.getChildCount() - 1) / 2 + 1)
-        explist_ctx = ctx.getChild(2)
         exp_length = int((explist_ctx.getChildCount() - 1) / 2 + 1)
         explist = self.visit(explist_ctx)
         for i in range(0, var_length, 1):
@@ -124,19 +125,25 @@ class MVisitor(MaverickVisitor):
             if (i < exp_length):
                 val = explist[i]
                 if self.symbol_table.is_global():
-                    mvar = ir.GlobalVariable(self.module, val['type'], name=id)
-                    mvar.linkage = 'internal'
-                    mvar.initializer = ir.Constant(val['type'], val['name'].constant)
+                    var = ir.GlobalVariable(self.module, val['type'], name=id)
+                    var.linkage = 'internal'
+                    var.initializer = ir.Constant(val['type'], val['name'].constant)
                 else:
-                    mvar = self.builder_list[-1].alloca(val['type'], name=id)
-                    self.builder_list[-1].store(val['name'], mvar)
-                self.symbol_table.insert_item(id, {'Type': val['type'], 'Name': mvar})
+                    var = self.builder_list[-1].alloca(val['type'], name=id)
+                    self.builder_list[-1].store(val['name'], var)
+                self.symbol_table.insert_item(id, {'Type': val['type'], 'Name': var})
             else:
                 raise InitializationException(id)
+
+    def visitVarassign(self, ctx: MaverickParser.VarassignContext):
+        builder = self.builder_list[-1]
+        val = self.visit(ctx.getChild(2))
         need_load_cache = self.need_load
         self.need_load = False
-        super().visitVarinit(ctx)
+        var = self.visit(ctx.getChild(0))
         self.need_load = need_load_cache
+        builder.store(val['name'], var['name'])
+        return {'type': var['type'], 'name': builder.load(var['name'])}
 
     def visitFuncdef(self, ctx: MaverickParser.FuncdefContext):
         """
@@ -192,6 +199,63 @@ class MVisitor(MaverickVisitor):
             }
             param_list.append(param)
         return param_list
+
+    def visitWhileblock(self, ctx: MaverickParser.WhileblockContext):
+        """
+        whileblock
+            : 'while' condition 'do' block 'end'
+            ;
+        """
+        self.symbol_table.func_enter()
+        cur_builder = self.builder_list[-1]
+        cond_block = cur_builder.append_basic_block()
+        body_block = cur_builder.append_basic_block()
+        endwhile_block = cur_builder.append_basic_block()
+
+        cur_builder.branch(cond_block)
+        self.newBlock(cond_block)
+        cond = self.visit(ctx.getChild(1))
+
+        self.builder_list[-1].cbranch(cond['name'], body_block, endwhile_block)
+        self.newBlock(body_block)
+        self.visit(ctx.getChild(3))
+
+        self.builder_list[-1].branch(cond_block)
+
+        self.newBlock(endwhile_block)
+        self.symbol_table.func_quit()
+
+    def visitRepeatblock(self, ctx: MaverickParser.RepeatblockContext):
+        """
+        repeatblock
+            : 'repeat' block 'until' condition
+            ;
+        """
+        self.symbol_table.func_enter()
+        cur_builder = self.builder_list[-1]
+        cond_block = cur_builder.append_basic_block()
+        body_block = cur_builder.append_basic_block()
+        endwhile_block = cur_builder.append_basic_block()
+
+        cur_builder.branch(cond_block)
+        self.newBlock(cond_block)
+        cond = self.visit(ctx.getChild(3))
+
+        self.builder_list[-1].cbranch(cond['name'], body_block, endwhile_block)
+        self.newBlock(body_block)
+        self.visit(ctx.getChild(2))
+
+        self.builder_list[-1].branch(cond_block)
+
+        self.newBlock(endwhile_block)
+        self.symbol_table.func_quit()
+
+
+    def visitForequalblock(self, ctx: MaverickParser.ForequalblockContext):
+        return super().visitForequalblock(ctx)
+
+    def visitForinblock(self, ctx: MaverickParser.ForinblockContext):
+        return super().visitForinblock(ctx)
 
     def visitIfblock(self, ctx: MaverickParser.IfblockContext):
         """
@@ -330,12 +394,12 @@ class MVisitor(MaverickVisitor):
 
     def visitAddsub_expr(self, ctx: MaverickParser.Addsub_exprContext):
         builder = self.builder_list[-1]
-        expr1, expr2, return_dict = self.get_return_dict(ctx)
+        expr_left, expr_right, return_dict = self.get_return_dict(ctx)
         operator = ctx.getChild(1).getText()
         if operator == '+':
-            return_dict["name"] = builder.add(expr1['name'], expr2['name'])
+            return_dict["name"] = builder.add(expr_left['name'], expr_right['name'])
         elif operator == '-':
-            return_dict["name"] = builder.sub(expr1['name'], expr2['name'])
+            return_dict["name"] = builder.sub(expr_left['name'], expr_right['name'])
         return return_dict
 
     def visitBitwise_expr(self, ctx: MaverickParser.Bitwise_exprContext):

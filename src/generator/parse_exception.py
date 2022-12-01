@@ -24,3 +24,11 @@ class TypeMisatchException(BaseException):
 
     def __str__(self):
         return f"Type mismatch \"" + self.expr1 + "\", \"" + self.expr2 + "\""
+
+class TypeUnknownException(BaseException):
+    def __init__(self, variable):
+        self.variable = variable
+
+    def __str__(self):
+        return f"Type unknown \"" + self.variable + "\""
+

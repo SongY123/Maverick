@@ -29,6 +29,11 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by MaverickParser#varassign.
+    def visitVarassign(self, ctx:MaverickParser.VarassignContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by MaverickParser#whileblock.
     def visitWhileblock(self, ctx:MaverickParser.WhileblockContext):
         return self.visitChildren(ctx)
@@ -199,11 +204,6 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#selffunctioncall.
-    def visitSelffunctioncall(self, ctx:MaverickParser.SelffunctioncallContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MaverickParser#varOrExp.
     def visitVarOrExp(self, ctx:MaverickParser.VarOrExpContext):
         return self.visitChildren(ctx)
@@ -341,6 +341,11 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#scanfFunction.
     def visitScanfFunction(self, ctx:MaverickParser.ScanfFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#selffunctioncall.
+    def visitSelffunctioncall(self, ctx:MaverickParser.SelffunctioncallContext):
         return self.visitChildren(ctx)
 
 

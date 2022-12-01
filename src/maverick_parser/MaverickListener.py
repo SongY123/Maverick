@@ -44,6 +44,15 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by MaverickParser#varassign.
+    def enterVarassign(self, ctx:MaverickParser.VarassignContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#varassign.
+    def exitVarassign(self, ctx:MaverickParser.VarassignContext):
+        pass
+
+
     # Enter a parse tree produced by MaverickParser#whileblock.
     def enterWhileblock(self, ctx:MaverickParser.WhileblockContext):
         pass
@@ -350,15 +359,6 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#selffunctioncall.
-    def enterSelffunctioncall(self, ctx:MaverickParser.SelffunctioncallContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#selffunctioncall.
-    def exitSelffunctioncall(self, ctx:MaverickParser.SelffunctioncallContext):
-        pass
-
-
     # Enter a parse tree produced by MaverickParser#varOrExp.
     def enterVarOrExp(self, ctx:MaverickParser.VarOrExpContext):
         pass
@@ -608,6 +608,15 @@ class MaverickListener(ParseTreeListener):
 
     # Exit a parse tree produced by MaverickParser#scanfFunction.
     def exitScanfFunction(self, ctx:MaverickParser.ScanfFunctionContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#selffunctioncall.
+    def enterSelffunctioncall(self, ctx:MaverickParser.SelffunctioncallContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#selffunctioncall.
+    def exitSelffunctioncall(self, ctx:MaverickParser.SelffunctioncallContext):
         pass
 
 
