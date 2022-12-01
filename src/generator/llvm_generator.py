@@ -64,7 +64,9 @@ class MVisitor(MaverickVisitor):
             raise TypeMisatchException(expr1, expr2)
         return expr1, expr2
     def get_return_dict(self, ctx):
-        expr1, expr2 = self.exprConvert(self.visit(ctx.getChild(0)), self.visit(ctx.getChild(2)))
+        expr_left = self.visit(ctx.getChild(0))
+        expr_right = self.visit(ctx.getChild(2))
+        expr1, expr2 = self.exprConvert(expr_left, expr_right)
         return_dict = {
             'type': expr1['type'],
             'const': False
@@ -217,6 +219,32 @@ class MVisitor(MaverickVisitor):
             return_dict["name"] = builder.srem(expr1['name'], expr2['name'])
         return return_dict
 
+    def visitAddsub_expr(self, ctx: MaverickParser.Addsub_exprContext):
+        builder = self.builder_list[-1]
+        expr1, expr2, return_dict = self.get_return_dict(ctx)
+        operator = ctx.getChild(1).getText()
+        if operator == '+':
+            return_dict["name"] = builder.add(expr1['name'], expr2['name'])
+        elif operator == '-':
+            return_dict["name"] = builder.sub(expr1['name'], expr2['name'])
+        return return_dict
+
+    def visitBitwise_expr(self, ctx: MaverickParser.Bitwise_exprContext):
+        builder = self.builder_list[-1]
+        expr1, expr2, return_dict = self.get_return_dict(ctx)
+        operator = ctx.getChild(1).getText()
+        if operator == '&':
+            return_dict["name"] = builder.and_(expr1['name'], expr2['name'])
+        elif operator == '|':
+            return_dict["name"] = builder.or_(expr1['name'], expr2['name'])
+        if operator == '~':
+            return_dict["name"] = builder.xor(expr1['name'], expr2['name'])
+        elif operator == '<<':
+            return_dict["name"] = builder.shl(expr1['name'], expr2['name'])
+        if operator == '>>':
+            return_dict["name"] = builder.lshr(expr1['name'], expr2['name'])
+        return return_dict
+
     def visitVar(self, ctx: MaverickParser.VarContext):
         id = ctx.getText()
         if self.func_list.get(id) is not None:
@@ -320,7 +348,10 @@ class MVisitor(MaverickVisitor):
         }
 
     def visitVarOrExp(self, ctx: MaverickParser.VarOrExpContext):
-         return self.visit(ctx.getChild(0))
+        if ctx.getChildCount() == 1:
+            return self.visit(ctx.getChild(0))
+        else:
+            return self.visit(ctx.getChild(1))
 
     def visitNameAndArgs(self, ctx: MaverickParser.NameAndArgsContext):
         if ctx.getChild(0).getText() != ':':

@@ -1,7 +1,3 @@
-a=10
-b=10
-c = a//b
-print(c)
-
-c = a/b
-print(c)
+a=1
+b=2
+print(a~b)
