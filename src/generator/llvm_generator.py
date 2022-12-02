@@ -29,6 +29,9 @@ class MVisitor(MaverickVisitor):
 
         self.symbol_table = SymbolTable()
 
+        # used to store module object
+        self.module_list = dict()
+
         self.need_load = True
 
         self.constants = 0

@@ -79,11 +79,6 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#label.
-    def visitLabel(self, ctx:MaverickParser.LabelContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MaverickParser#funcname.
     def visitFuncname(self, ctx:MaverickParser.FuncnameContext):
         return self.visitChildren(ctx)
@@ -106,11 +101,6 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#condition.
     def visitCondition(self, ctx:MaverickParser.ConditionContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MaverickParser#tableconstructor_expr.
-    def visitTableconstructor_expr(self, ctx:MaverickParser.Tableconstructor_exprContext):
         return self.visitChildren(ctx)
 
 
@@ -139,8 +129,8 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#more_expr.
-    def visitMore_expr(self, ctx:MaverickParser.More_exprContext):
+    # Visit a parse tree produced by MaverickParser#delete_module.
+    def visitDelete_module(self, ctx:MaverickParser.Delete_moduleContext):
         return self.visitChildren(ctx)
 
 
@@ -176,6 +166,11 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#truefalse_expr.
     def visitTruefalse_expr(self, ctx:MaverickParser.Truefalse_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#new_module.
+    def visitNew_module(self, ctx:MaverickParser.New_moduleContext):
         return self.visitChildren(ctx)
 
 
@@ -224,13 +219,18 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#tableconstructor.
-    def visitTableconstructor(self, ctx:MaverickParser.TableconstructorContext):
+    # Visit a parse tree produced by MaverickParser#moduleconmoduleor.
+    def visitModuleconmoduleor(self, ctx:MaverickParser.ModuleconmoduleorContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#fieldlist.
-    def visitFieldlist(self, ctx:MaverickParser.FieldlistContext):
+    # Visit a parse tree produced by MaverickParser#modulefieldlist.
+    def visitModulefieldlist(self, ctx:MaverickParser.ModulefieldlistContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#modulefunclist.
+    def visitModulefunclist(self, ctx:MaverickParser.ModulefunclistContext):
         return self.visitChildren(ctx)
 
 

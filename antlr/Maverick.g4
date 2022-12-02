@@ -13,13 +13,13 @@ stat
     | varinit
     | varassign
     | functioncall
-    | label
     | break
     | whileblock
     | repeatblock
     | ifblock
     | forblock
     | funcdef
+    | moduleconmoduleor
     ;
 
 varinit
@@ -66,10 +66,6 @@ laststat
     : 'return' exp? | break | continue ';'?
     ;
 
-label
-    : '::' NAME '::'
-    ;
-
 funcname
     : NAME ('.' NAME)* (':' NAME)?
     ;
@@ -97,7 +93,6 @@ exp
     | string                                # string_expr
     | functioncall                          # functioncall_expr
     | varOrExp                              # varorexp_expr
-    | tableconstructor                      # tableconstructor_expr
     | operatorUnary exp                     # unary_expr
     | exp operatorMulDivMod exp             # muldivmod_expr
     | exp operatorAddSub exp                # addsub_expr
@@ -105,6 +100,8 @@ exp
     | exp operatorAnd exp                   # and_expr
     | exp operatorOr exp                    # or_expr
     | exp operatorBitwise exp               # bitwise_expr
+    | 'new' NAME '(' ')'                    # new_module
+    | 'delete' NAME                         # delete_module
     ;
 
 functioncall
@@ -130,7 +127,7 @@ nameAndArgs
     ;
 
 args
-    : '(' explist? ')' | tableconstructor | string
+    : '(' explist? ')' | string
     ;
 
 funcbody
@@ -142,20 +139,22 @@ parlist
     : namelist (',' '...')? | '...'
     ;
 
-tableconstructor
-    : '{' fieldlist? '}'
+moduleconmoduleor
+    : 'module' NAME modulefieldlist? modulefunclist? 'end'
     ;
 
-fieldlist
+modulefieldlist
     : field (fieldsep field)* fieldsep?
     ;
-
+modulefunclist
+    : funcdef+
+    ;
 field
-    : '[' exp ']' '=' exp | NAME '=' exp | exp
+    : type NAME ('=' exp)?
     ;
 
 fieldsep
-    : ',' | ';'
+    : ','?
     ;
 
 operatorOr
@@ -195,6 +194,7 @@ type
     | 'float'
     | 'char'
     | 'string'
+    | NAME    //module
     ;
 myINT : INT;
 myHEX : HEX;
