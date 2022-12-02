@@ -197,15 +197,6 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#strcat_expr.
-    def enterStrcat_expr(self, ctx:MaverickParser.Strcat_exprContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#strcat_expr.
-    def exitStrcat_expr(self, ctx:MaverickParser.Strcat_exprContext):
-        pass
-
-
     # Enter a parse tree produced by MaverickParser#nil_expr.
     def enterNil_expr(self, ctx:MaverickParser.Nil_exprContext):
         pass
@@ -248,15 +239,6 @@ class MaverickListener(ParseTreeListener):
 
     # Exit a parse tree produced by MaverickParser#addsub_expr.
     def exitAddsub_expr(self, ctx:MaverickParser.Addsub_exprContext):
-        pass
-
-
-    # Enter a parse tree produced by MaverickParser#power_expr.
-    def enterPower_expr(self, ctx:MaverickParser.Power_exprContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#power_expr.
-    def exitPower_expr(self, ctx:MaverickParser.Power_exprContext):
         pass
 
 
@@ -476,15 +458,6 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#operatorStrcat.
-    def enterOperatorStrcat(self, ctx:MaverickParser.OperatorStrcatContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#operatorStrcat.
-    def exitOperatorStrcat(self, ctx:MaverickParser.OperatorStrcatContext):
-        pass
-
-
     # Enter a parse tree produced by MaverickParser#operatorAddSub.
     def enterOperatorAddSub(self, ctx:MaverickParser.OperatorAddSubContext):
         pass
@@ -518,15 +491,6 @@ class MaverickListener(ParseTreeListener):
 
     # Exit a parse tree produced by MaverickParser#operatorUnary.
     def exitOperatorUnary(self, ctx:MaverickParser.OperatorUnaryContext):
-        pass
-
-
-    # Enter a parse tree produced by MaverickParser#operatorPower.
-    def enterOperatorPower(self, ctx:MaverickParser.OperatorPowerContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#operatorPower.
-    def exitOperatorPower(self, ctx:MaverickParser.OperatorPowerContext):
         pass
 
 

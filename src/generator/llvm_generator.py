@@ -33,7 +33,7 @@ class MVisitor(MaverickVisitor):
 
         self.constants = 0
 
-        func_name = 'main';
+        func_name = 'main'
         llvm_type = ir.FunctionType(void, [])
         llvm_func = ir.Function(self.module, llvm_type, name=func_name)
         block = llvm_func.append_basic_block(name=func_name + '.entry')
@@ -85,7 +85,6 @@ class MVisitor(MaverickVisitor):
             return expr_left, expr_right
         else:
             raise TypeMisatchException(expr_left, expr_right)
-        return expr_left, expr_right
 
     def get_return_dict(self, ctx):
         expr_left = self.visit(ctx.getChild(0))
@@ -118,6 +117,8 @@ class MVisitor(MaverickVisitor):
             return int32
         if ctx.getText() == 'float':
             return float
+        if ctx.getText() == 'char':
+            return char
         return void
 
     def visitVarinit(self, ctx: MaverickParser.VarinitContext):
@@ -158,7 +159,7 @@ class MVisitor(MaverickVisitor):
         # funcname
         func_name = ctx.getChild(2).getText()
         if func_name in self.func_list:
-            raise FunctionNameDuplicateException(func_name=func_name)
+            raise FunctionNameDuplicateException(func_name)
         return_type = self.visit(ctx.getChild(1))
         # func params
         para_list = self.visit(ctx.getChild(4))

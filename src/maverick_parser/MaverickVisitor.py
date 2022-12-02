@@ -114,11 +114,6 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#strcat_expr.
-    def visitStrcat_expr(self, ctx:MaverickParser.Strcat_exprContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MaverickParser#nil_expr.
     def visitNil_expr(self, ctx:MaverickParser.Nil_exprContext):
         return self.visitChildren(ctx)
@@ -141,11 +136,6 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#addsub_expr.
     def visitAddsub_expr(self, ctx:MaverickParser.Addsub_exprContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MaverickParser#power_expr.
-    def visitPower_expr(self, ctx:MaverickParser.Power_exprContext):
         return self.visitChildren(ctx)
 
 
@@ -269,11 +259,6 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#operatorStrcat.
-    def visitOperatorStrcat(self, ctx:MaverickParser.OperatorStrcatContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MaverickParser#operatorAddSub.
     def visitOperatorAddSub(self, ctx:MaverickParser.OperatorAddSubContext):
         return self.visitChildren(ctx)
@@ -291,11 +276,6 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#operatorUnary.
     def visitOperatorUnary(self, ctx:MaverickParser.OperatorUnaryContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MaverickParser#operatorPower.
-    def visitOperatorPower(self, ctx:MaverickParser.OperatorPowerContext):
         return self.visitChildren(ctx)
 
 

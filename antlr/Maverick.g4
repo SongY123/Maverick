@@ -99,11 +99,9 @@ exp
     | functioncall                          # functioncall_expr
     | varOrExp                              # varorexp_expr
     | tableconstructor                      # tableconstructor_expr
-    | <assoc=right> exp operatorPower exp   # power_expr
     | operatorUnary exp                     # unary_expr
     | exp operatorMulDivMod exp             # muldivmod_expr
     | exp operatorAddSub exp                # addsub_expr
-    | <assoc=right> exp operatorStrcat exp  # strcat_expr
     | exp operatorComparison exp            # comp_expr
     | exp operatorAnd exp                   # and_expr
     | exp operatorOr exp                    # or_expr
@@ -170,9 +168,6 @@ operatorAnd
 operatorComparison
 	: '<' | '>' | '<=' | '>=' | '!=' | '==';
 
-operatorStrcat
-	: '..';
-
 operatorAddSub
 	: '+' | '-';
 
@@ -184,9 +179,6 @@ operatorBitwise
 
 operatorUnary
     : 'not' | '#' | '-' | '~';
-
-operatorPower
-    : '^';
 
 number
     : myINT | myHEX | myFLOAT
@@ -202,6 +194,8 @@ type
     | 'boolean'
     | 'int'
     | 'float'
+    | 'char'
+    | 'string'
     ;
 myINT : INT;
 myHEX : HEX;
