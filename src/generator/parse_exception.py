@@ -3,12 +3,19 @@ class BaseException(Exception):
     pass
 
 
-class InitializationException(BaseException):
+class VariableInitializationException(BaseException):
     def __init__(self, variable):
         self.variable = variable
 
     def __str__(self):
         return f"Variable \"" + self.variable + "\" must be initialized first."
+
+class VariableNotDefineException(BaseException):
+    def __init__(self, variable):
+        self.variable = variable
+
+    def __str__(self):
+        return f"Variable \"" + self.variable + "\" is not defined."
 
 class FunctionNameDuplicateException(BaseException):
     def __init__(self, funcname):

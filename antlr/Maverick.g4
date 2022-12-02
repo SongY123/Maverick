@@ -55,7 +55,7 @@ elseconditionblock
     ;
 
 forblock
-    : 'for' (type)? NAME '=' exp ',' exp (',' exp)? 'do' block 'end'
+    : 'for' varassign ',' exp (',' exp)? 'do' block 'end'
     ;
 
 funcdef

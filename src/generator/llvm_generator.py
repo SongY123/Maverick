@@ -80,12 +80,12 @@ class MVisitor(MaverickVisitor):
             return return_dict
         return var
 
-    def exprConvert(self, expr1, expr_right):
-        if expr1['type'] == expr_right['type']:
-            return expr1, expr_right
+    def exprConvert(self, expr_left, expr_right):
+        if expr_left['type'] == expr_right['type']:
+            return expr_left, expr_right
         else:
-            raise TypeMisatchException(expr1, expr_right)
-        return expr1, expr_right
+            raise TypeMisatchException(expr_left, expr_right)
+        return expr_left, expr_right
 
     def get_return_dict(self, ctx):
         expr_left = self.visit(ctx.getChild(0))
@@ -139,7 +139,7 @@ class MVisitor(MaverickVisitor):
                     self.builder_list[-1].store(val['name'], var)
                 self.symbol_table.insert_item(id, {'Type': val['type'], 'Name': var})
             else:
-                raise InitializationException(id)
+                raise VariableInitializationException(id)
 
     def visitVarassign(self, ctx: MaverickParser.VarassignContext):
         builder = self.builder_list[-1]
@@ -271,8 +271,67 @@ class MVisitor(MaverickVisitor):
         self.symbol_table.func_quit()
 
 
-    def visitForblock(self, ctx: MaverickParser.ForequalblockContext):
-        return super().visitForequalblock(ctx)
+    def visitForblock(self, ctx: MaverickParser.ForblockContext):
+        """
+        forblock
+            : 'for' varassign ',' exp (',' exp)? 'do' block 'end'
+            ;
+        """
+        self.symbol_table.func_enter()
+
+        has_step = ctx.getChildCount() == 9
+
+        var = self.visit(ctx.getChild(1))
+
+        cur_builder = self.builder_list[-1]
+        cond_block = cur_builder.append_basic_block()
+        body_block = cur_builder.append_basic_block()
+        endfor_block = cur_builder.append_basic_block()
+        self.ctr_cond_list.append(cond_block)
+        self.ctr_end_list.append(endfor_block)
+
+        cur_builder.branch(cond_block)
+        self.newBlock(cond_block)
+        cur_builder = self.builder_list[-1]
+        id = ctx.getChild(1).getChild(0).getText()
+        item = self.symbol_table.get_item(id)
+        if self.need_load:
+            var = cur_builder.load(item["Name"])
+        else:
+            var = item["Name"]
+        max_value = self.visit(ctx.getChild(3))
+
+        cond = cur_builder.icmp_signed("<", var, max_value['name'])
+
+        cur_builder.cbranch(cond, body_block, endfor_block)
+
+        self.newBlock(body_block)
+        cur_builder = self.builder_list[-1]
+        # visit block
+        if has_step:
+            self.visit(ctx.getChild(7))
+        else:
+            self.visit(ctx.getChild(5))
+
+        # visit step
+        if has_step:
+            val = self.visit(ctx.getChild(5))
+            result = cur_builder.add(var, val['name'])
+            # return {'type': var['type'], 'name': cur_builder.load(var['name'])}
+        else:
+            result = cur_builder.add(var, ir.Constant(int32, 1))
+        item = self.symbol_table.get_item(id)["Name"]
+        cur_builder.store(result, item)
+
+        try:
+            cur_builder.branch(cond_block)
+        except AssertionError:
+            print("Branch optimize")
+
+        self.newBlock(endfor_block)
+        self.ctr_cond_list.pop(-1)
+        self.ctr_end_list.pop(-1)
+        self.symbol_table.func_quit()
 
     def visitIfblock(self, ctx: MaverickParser.IfblockContext):
         """
