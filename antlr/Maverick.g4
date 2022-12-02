@@ -193,7 +193,7 @@ number
     ;
 
 string
-    : NORMALSTRING | CHARSTRING | LONGSTRING
+    : NORMALSTRING | CHARSTRING
     ;
 
 type
@@ -223,10 +223,6 @@ CHARSTRING
     : '\'' ( EscapeSequence | ~('\''|'\\') )* '\''
     ;
 
-LONGSTRING
-    : '[' NESTED_STR ']'
-    ;
-
 fragment
 NESTED_STR
     : '=' NESTED_STR '='
@@ -252,35 +248,11 @@ ExponentPart
     : [eE] [+-]? Digit+
     ;
 
-fragment
-HexExponentPart
-    : [pP] [+-]? Digit+
-    ;
 
 fragment
 EscapeSequence
-    : '\\' [abfnrtvz"'|$#\\]   // World of Warcraft Lua additionally escapes |$#
+    : '\\' [abfnrtvz"'|$#\\]
     | '\\' '\r'? '\n'
-    | DecimalEscape
-    | HexEscape
-    | UtfEscape
-    ;
-
-fragment
-DecimalEscape
-    : '\\' Digit
-    | '\\' Digit Digit
-    | '\\' [0-2] Digit Digit
-    ;
-
-fragment
-HexEscape
-    : '\\' 'x' HexDigit HexDigit
-    ;
-
-fragment
-UtfEscape
-    : '\\' 'u{' HexDigit+ '}'
     ;
 
 fragment
@@ -308,10 +280,6 @@ LINE_COMMENT
 
 WS
     : [ \t\u000C\r\n]+ -> skip
-    ;
-
-SHEBANG
-    : '#' '!' SingleLineInputCharacter* -> channel(HIDDEN)
     ;
 
 /*

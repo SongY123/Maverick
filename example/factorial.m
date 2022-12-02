@@ -1,12 +1,10 @@
--- defines [a] `factorial` 'function'
-    function fact (n)
-      if n == 0 then
-        return 1
-      else
-        return n * fact(n-1)
-      end
-    end
-    
-    print("enter a number:")
-    a = io.read("*number")        --[[ `read` ([a]) "number" ]]
-    print(fact(a)) --comment then EOF
+function int factorial(int n)
+  int i=0
+  int result = 1
+  for i=1,n+1,1
+    result = result * i
+  end
+  return result
+end
+
+printf("%d", factorial(4))
