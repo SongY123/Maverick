@@ -95,7 +95,6 @@ exp
     | ('false' | 'true')                    # truefalse_expr
     | number                                # number_expr
     | string                                # string_expr
-    | '...'                                 # more_expr
     | functioncall                          # functioncall_expr
     | varOrExp                              # varorexp_expr
     | tableconstructor                      # tableconstructor_expr

@@ -577,20 +577,29 @@ class MVisitor(MaverickVisitor):
 
     def visitString(self, ctx: MaverickParser.StringContext):
         """
-        mySTRING: STRING;
+        string : : NORMALSTRING | CHARSTRING;
         """
-        mstr = ctx.getText().replace('\\n', '\n')[1:-1] + '\0'
-        length = len(bytearray(mstr, 'utf-8'))
-        ret = ir.GlobalVariable(self.module, ir.ArrayType(byte, length), ".str%d" % self.
-                                constants)
-        self.constants += 1
-        ret.global_constant = True
-        ret.initializer = ir.Constant(ir.ArrayType(byte, length), bytearray(mstr, 'utf-8'))
-        return {
-            'type': ir.ArrayType(byte, length),
-            'const': False,
-            'name': ret
-        }
+        if ctx.getText()[0] == '\'':
+            # char
+            return {
+                'type': char,
+                'const': True,
+                'name': ir.Constant(char, ord(ctx.getText()[1]))
+            }
+        else:
+            # string
+            str = ctx.getText().replace('\\n', '\n')[1:-1] + '\0'
+            length = len(bytearray(str, 'utf-8'))
+            ret = ir.GlobalVariable(self.module, ir.ArrayType(byte, length), ".str%d" % self.
+                                    constants)
+            self.constants += 1
+            ret.global_constant = True
+            ret.initializer = ir.Constant(ir.ArrayType(byte, length), bytearray(str, 'utf-8'))
+            return {
+                'type': ir.ArrayType(byte, length),
+                'const': False,
+                'name': ret
+            }
 
     def visitSelffunctioncall(self, ctx: MaverickParser.SelffunctioncallContext):
         func_name = self.visit(ctx.getChild(0))['name']
