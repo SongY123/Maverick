@@ -10,7 +10,7 @@ else:
 
 def serializedATN():
     return [
-        4,1,70,479,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,68,479,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
         2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,
         7,20,2,21,7,21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,
@@ -53,7 +53,7 @@ def serializedATN():
         22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,
         66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,0,
         9,1,0,22,23,2,0,1,1,13,13,1,0,31,36,1,0,38,39,1,0,40,42,1,0,43,47,
-        3,0,39,39,45,45,48,49,1,0,61,63,1,0,51,55,491,0,106,1,0,0,0,2,112,
+        3,0,39,39,45,45,48,49,1,0,61,62,1,0,51,55,491,0,106,1,0,0,0,2,112,
         1,0,0,0,4,129,1,0,0,0,6,131,1,0,0,0,8,136,1,0,0,0,10,140,1,0,0,0,
         12,146,1,0,0,0,14,151,1,0,0,0,16,163,1,0,0,0,18,168,1,0,0,0,20,173,
         1,0,0,0,22,176,1,0,0,0,24,188,1,0,0,0,26,207,1,0,0,0,28,209,1,0,
@@ -164,8 +164,8 @@ def serializedATN():
         422,5,50,0,0,422,83,1,0,0,0,423,427,3,90,45,0,424,427,3,92,46,0,
         425,427,3,94,47,0,426,423,1,0,0,0,426,424,1,0,0,0,426,425,1,0,0,
         0,427,85,1,0,0,0,428,429,7,7,0,0,429,87,1,0,0,0,430,431,7,8,0,0,
-        431,89,1,0,0,0,432,433,5,64,0,0,433,91,1,0,0,0,434,435,5,65,0,0,
-        435,93,1,0,0,0,436,437,5,66,0,0,437,95,1,0,0,0,438,439,5,56,0,0,
+        431,89,1,0,0,0,432,433,5,63,0,0,433,91,1,0,0,0,434,435,5,64,0,0,
+        435,93,1,0,0,0,436,437,5,65,0,0,437,95,1,0,0,0,438,439,5,56,0,0,
         439,97,1,0,0,0,440,441,5,57,0,0,441,99,1,0,0,0,442,443,5,58,0,0,
         443,444,5,15,0,0,444,452,3,86,43,0,445,448,5,13,0,0,446,449,3,46,
         23,0,447,449,3,40,20,0,448,446,1,0,0,0,448,447,1,0,0,0,449,451,1,
@@ -218,9 +218,8 @@ class MaverickParser ( Parser ):
                       "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                       "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                       "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                      "NAME", "NORMALSTRING", "CHARSTRING", "LONGSTRING", 
-                      "INT", "HEX", "FLOAT", "COMMENT", "LINE_COMMENT", 
-                      "WS", "SHEBANG" ]
+                      "NAME", "NORMALSTRING", "CHARSTRING", "INT", "HEX", 
+                      "FLOAT", "COMMENT", "LINE_COMMENT", "WS" ]
 
     RULE_chunk = 0
     RULE_block = 1
@@ -352,14 +351,12 @@ class MaverickParser ( Parser ):
     NAME=60
     NORMALSTRING=61
     CHARSTRING=62
-    LONGSTRING=63
-    INT=64
-    HEX=65
-    FLOAT=66
-    COMMENT=67
-    LINE_COMMENT=68
-    WS=69
-    SHEBANG=70
+    INT=63
+    HEX=64
+    FLOAT=65
+    COMMENT=66
+    LINE_COMMENT=67
+    WS=68
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -1345,7 +1342,7 @@ class MaverickParser ( Parser ):
                 self.state = 200
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                if (((_la - 15)) & ~0x3f) == 0 and ((1 << (_la - 15)) & 4494830394676161) != 0:
+                if (((_la - 15)) & ~0x3f) == 0 and ((1 << (_la - 15)) & 2243030580990913) != 0:
                     self.state = 199
                     self.exp(0)
 
@@ -2744,7 +2741,7 @@ class MaverickParser ( Parser ):
             self.state = 336
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while ((_la) & ~0x3f) == 0 and ((1 << _la) & -2305843009078394880) != 0:
+            while ((_la) & ~0x3f) == 0 and ((1 << _la) & 6917529027776380928) != 0:
                 self.state = 333
                 self.nameAndArgs()
                 self.state = 338
@@ -2897,7 +2894,7 @@ class MaverickParser ( Parser ):
                 self.state = 355
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                if (((_la - 15)) & ~0x3f) == 0 and ((1 << (_la - 15)) & 4494830394676161) != 0:
+                if (((_la - 15)) & ~0x3f) == 0 and ((1 << (_la - 15)) & 2243030580990913) != 0:
                     self.state = 354
                     self.explist()
 
@@ -2910,7 +2907,7 @@ class MaverickParser ( Parser ):
                 self.state = 358
                 self.tableconstructor()
                 pass
-            elif token in [61, 62, 63]:
+            elif token in [61, 62]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 359
                 self.string()
@@ -3092,7 +3089,7 @@ class MaverickParser ( Parser ):
             self.state = 375
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if (((_la - 15)) & ~0x3f) == 0 and ((1 << (_la - 15)) & 4494830394677185) != 0:
+            if (((_la - 15)) & ~0x3f) == 0 and ((1 << (_la - 15)) & 2243030580991937) != 0:
                 self.state = 374
                 self.fieldlist()
 
@@ -3806,17 +3803,17 @@ class MaverickParser ( Parser ):
             self.state = 426
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [64]:
+            if token in [63]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 423
                 self.myINT()
                 pass
-            elif token in [65]:
+            elif token in [64]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 424
                 self.myHEX()
                 pass
-            elif token in [66]:
+            elif token in [65]:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 425
                 self.myFLOAT()
@@ -3845,9 +3842,6 @@ class MaverickParser ( Parser ):
 
         def CHARSTRING(self):
             return self.getToken(MaverickParser.CHARSTRING, 0)
-
-        def LONGSTRING(self):
-            return self.getToken(MaverickParser.LONGSTRING, 0)
 
         def getRuleIndex(self):
             return MaverickParser.RULE_string
@@ -3878,7 +3872,7 @@ class MaverickParser ( Parser ):
             self.enterOuterAlt(localctx, 1)
             self.state = 428
             _la = self._input.LA(1)
-            if not(((_la) & ~0x3f) == 0 and ((1 << _la) & -2305843009213693952) != 0):
+            if not(_la==61 or _la==62):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)

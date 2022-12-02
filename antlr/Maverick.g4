@@ -223,12 +223,6 @@ CHARSTRING
     : '\'' ( EscapeSequence | ~('\''|'\\') )* '\''
     ;
 
-fragment
-NESTED_STR
-    : '=' NESTED_STR '='
-    | '[' .*? ']'
-    ;
-
 INT
     : Digit+
     ;
@@ -271,11 +265,11 @@ SingleLineInputCharacter
     ;
 
 COMMENT
-    : '--[' NESTED_STR ']' -> channel(HIDDEN)
+    : '"""' .* '"""' -> channel(HIDDEN)
     ;
 
 LINE_COMMENT
-    : '--' SingleLineInputCharacter* -> channel(HIDDEN)
+    : '#' SingleLineInputCharacter* -> channel(HIDDEN)
     ;
 
 WS
