@@ -129,11 +129,6 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#delete_module.
-    def visitDelete_module(self, ctx:MaverickParser.Delete_moduleContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MaverickParser#string_expr.
     def visitString_expr(self, ctx:MaverickParser.String_exprContext):
         return self.visitChildren(ctx)
@@ -169,8 +164,13 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#new_module.
-    def visitNew_module(self, ctx:MaverickParser.New_moduleContext):
+    # Visit a parse tree produced by MaverickParser#new_class.
+    def visitNew_class(self, ctx:MaverickParser.New_classContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#delete_class.
+    def visitDelete_class(self, ctx:MaverickParser.Delete_classContext):
         return self.visitChildren(ctx)
 
 
@@ -219,18 +219,18 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#moduleconmoduleor.
-    def visitModuleconmoduleor(self, ctx:MaverickParser.ModuleconmoduleorContext):
+    # Visit a parse tree produced by MaverickParser#classconstructor.
+    def visitClassconstructor(self, ctx:MaverickParser.ClassconstructorContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#modulefieldlist.
-    def visitModulefieldlist(self, ctx:MaverickParser.ModulefieldlistContext):
+    # Visit a parse tree produced by MaverickParser#classfieldlist.
+    def visitClassfieldlist(self, ctx:MaverickParser.ClassfieldlistContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#modulefunclist.
-    def visitModulefunclist(self, ctx:MaverickParser.ModulefunclistContext):
+    # Visit a parse tree produced by MaverickParser#classfunclist.
+    def visitClassfunclist(self, ctx:MaverickParser.ClassfunclistContext):
         return self.visitChildren(ctx)
 
 

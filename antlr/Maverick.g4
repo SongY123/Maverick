@@ -19,7 +19,7 @@ stat
     | ifblock
     | forblock
     | funcdef
-    | moduleconmoduleor
+    | classconstructor
     ;
 
 varinit
@@ -100,8 +100,8 @@ exp
     | exp operatorAnd exp                   # and_expr
     | exp operatorOr exp                    # or_expr
     | exp operatorBitwise exp               # bitwise_expr
-    | 'new' NAME '(' ')'                    # new_module
-    | 'delete' NAME                         # delete_module
+    | 'new' NAME '(' ')'                    # new_class
+    | 'delete' NAME                         # delete_class
     ;
 
 functioncall
@@ -139,16 +139,17 @@ parlist
     : namelist (',' '...')? | '...'
     ;
 
-moduleconmoduleor
-    : 'module' NAME modulefieldlist? modulefunclist? 'end'
+classconstructor
+    : 'class' NAME classfieldlist? classfunclist? 'end'
     ;
 
-modulefieldlist
+classfieldlist
     : field (fieldsep field)* fieldsep?
     ;
-modulefunclist
+classfunclist
     : funcdef+
     ;
+
 field
     : type NAME ('=' exp)?
     ;
@@ -194,7 +195,7 @@ type
     | 'float'
     | 'char'
     | 'string'
-    | NAME    //module
+    | NAME    //class
     ;
 myINT : INT;
 myHEX : HEX;

@@ -192,7 +192,7 @@ class MaverickParser ( Parser ):
                      "'repeat'", "'until'", "'if'", "'then'", "'elseif'", 
                      "'else'", "'for'", "','", "'function'", "'('", "')'", 
                      "'return'", "'.'", "':'", "'nil'", "'false'", "'true'", 
-                     "'new'", "'delete'", "'['", "']'", "'...'", "'module'", 
+                     "'new'", "'delete'", "'['", "']'", "'...'", "'class'", 
                      "'or'", "'and'", "'<'", "'>'", "'<='", "'>='", "'!='", 
                      "'=='", "'+'", "'-'", "'*'", "'/'", "'%'", "'&'", "'|'", 
                      "'~'", "'<<'", "'>>'", "'not'", "'#'", "'void'", "'byte'", 
@@ -245,9 +245,9 @@ class MaverickParser ( Parser ):
     RULE_args = 25
     RULE_funcbody = 26
     RULE_parlist = 27
-    RULE_moduleconmoduleor = 28
-    RULE_modulefieldlist = 29
-    RULE_modulefunclist = 30
+    RULE_classconstructor = 28
+    RULE_classfieldlist = 29
+    RULE_classfunclist = 30
     RULE_field = 31
     RULE_fieldsep = 32
     RULE_operatorOr = 33
@@ -274,8 +274,8 @@ class MaverickParser ( Parser ):
                    "elseconditionblock", "forblock", "funcdef", "laststat", 
                    "funcname", "varlist", "namelist", "explist", "condition", 
                    "exp", "functioncall", "varOrExp", "var", "varSuffix", 
-                   "nameAndArgs", "args", "funcbody", "parlist", "moduleconmoduleor", 
-                   "modulefieldlist", "modulefunclist", "field", "fieldsep", 
+                   "nameAndArgs", "args", "funcbody", "parlist", "classconstructor", 
+                   "classfieldlist", "classfunclist", "field", "fieldsep", 
                    "operatorOr", "operatorAnd", "operatorComparison", "operatorAddSub", 
                    "operatorMulDivMod", "operatorBitwise", "operatorUnary", 
                    "number", "string", "type", "myINT", "myHEX", "myFLOAT", 
@@ -530,8 +530,8 @@ class MaverickParser ( Parser ):
             return self.getTypedRuleContext(MaverickParser.FuncdefContext,0)
 
 
-        def moduleconmoduleor(self):
-            return self.getTypedRuleContext(MaverickParser.ModuleconmoduleorContext,0)
+        def classconstructor(self):
+            return self.getTypedRuleContext(MaverickParser.ClassconstructorContext,0)
 
 
         def getRuleIndex(self):
@@ -625,7 +625,7 @@ class MaverickParser ( Parser ):
             elif la_ == 11:
                 self.enterOuterAlt(localctx, 11)
                 self.state = 124
-                self.moduleconmoduleor()
+                self.classconstructor()
                 pass
 
 
@@ -1845,30 +1845,6 @@ class MaverickParser ( Parser ):
                 return visitor.visitChildren(self)
 
 
-    class Delete_moduleContext(ExpContext):
-
-        def __init__(self, parser, ctx:ParserRuleContext): # actually a MaverickParser.ExpContext
-            super().__init__(parser)
-            self.copyFrom(ctx)
-
-        def NAME(self):
-            return self.getToken(MaverickParser.NAME, 0)
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterDelete_module" ):
-                listener.enterDelete_module(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitDelete_module" ):
-                listener.exitDelete_module(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitDelete_module" ):
-                return visitor.visitDelete_module(self)
-            else:
-                return visitor.visitChildren(self)
-
-
     class String_exprContext(ExpContext):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a MaverickParser.ExpContext
@@ -2068,7 +2044,7 @@ class MaverickParser ( Parser ):
                 return visitor.visitChildren(self)
 
 
-    class New_moduleContext(ExpContext):
+    class New_classContext(ExpContext):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a MaverickParser.ExpContext
             super().__init__(parser)
@@ -2078,16 +2054,40 @@ class MaverickParser ( Parser ):
             return self.getToken(MaverickParser.NAME, 0)
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterNew_module" ):
-                listener.enterNew_module(self)
+            if hasattr( listener, "enterNew_class" ):
+                listener.enterNew_class(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitNew_module" ):
-                listener.exitNew_module(self)
+            if hasattr( listener, "exitNew_class" ):
+                listener.exitNew_class(self)
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitNew_module" ):
-                return visitor.visitNew_module(self)
+            if hasattr( visitor, "visitNew_class" ):
+                return visitor.visitNew_class(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class Delete_classContext(ExpContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a MaverickParser.ExpContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def NAME(self):
+            return self.getToken(MaverickParser.NAME, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterDelete_class" ):
+                listener.enterDelete_class(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitDelete_class" ):
+                listener.exitDelete_class(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDelete_class" ):
+                return visitor.visitDelete_class(self)
             else:
                 return visitor.visitChildren(self)
 
@@ -2196,7 +2196,7 @@ class MaverickParser ( Parser ):
                 pass
 
             elif la_ == 8:
-                localctx = MaverickParser.New_moduleContext(self, localctx)
+                localctx = MaverickParser.New_classContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
                 self.state = 258
@@ -2210,7 +2210,7 @@ class MaverickParser ( Parser ):
                 pass
 
             elif la_ == 9:
-                localctx = MaverickParser.Delete_moduleContext(self, localctx)
+                localctx = MaverickParser.Delete_classContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
                 self.state = 262
@@ -2901,7 +2901,7 @@ class MaverickParser ( Parser ):
         return localctx
 
 
-    class ModuleconmoduleorContext(ParserRuleContext):
+    class ClassconstructorContext(ParserRuleContext):
         __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
@@ -2911,38 +2911,38 @@ class MaverickParser ( Parser ):
         def NAME(self):
             return self.getToken(MaverickParser.NAME, 0)
 
-        def modulefieldlist(self):
-            return self.getTypedRuleContext(MaverickParser.ModulefieldlistContext,0)
+        def classfieldlist(self):
+            return self.getTypedRuleContext(MaverickParser.ClassfieldlistContext,0)
 
 
-        def modulefunclist(self):
-            return self.getTypedRuleContext(MaverickParser.ModulefunclistContext,0)
+        def classfunclist(self):
+            return self.getTypedRuleContext(MaverickParser.ClassfunclistContext,0)
 
 
         def getRuleIndex(self):
-            return MaverickParser.RULE_moduleconmoduleor
+            return MaverickParser.RULE_classconstructor
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterModuleconmoduleor" ):
-                listener.enterModuleconmoduleor(self)
+            if hasattr( listener, "enterClassconstructor" ):
+                listener.enterClassconstructor(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitModuleconmoduleor" ):
-                listener.exitModuleconmoduleor(self)
+            if hasattr( listener, "exitClassconstructor" ):
+                listener.exitClassconstructor(self)
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitModuleconmoduleor" ):
-                return visitor.visitModuleconmoduleor(self)
+            if hasattr( visitor, "visitClassconstructor" ):
+                return visitor.visitClassconstructor(self)
             else:
                 return visitor.visitChildren(self)
 
 
 
 
-    def moduleconmoduleor(self):
+    def classconstructor(self):
 
-        localctx = MaverickParser.ModuleconmoduleorContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 56, self.RULE_moduleconmoduleor)
+        localctx = MaverickParser.ClassconstructorContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 56, self.RULE_classconstructor)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
@@ -2955,7 +2955,7 @@ class MaverickParser ( Parser ):
             _la = self._input.LA(1)
             if ((_la) & ~0x3f) == 0 and ((1 << _la) & 1224416148691353600) != 0:
                 self.state = 362
-                self.modulefieldlist()
+                self.classfieldlist()
 
 
             self.state = 366
@@ -2963,7 +2963,7 @@ class MaverickParser ( Parser ):
             _la = self._input.LA(1)
             if _la==14:
                 self.state = 365
-                self.modulefunclist()
+                self.classfunclist()
 
 
             self.state = 368
@@ -2977,7 +2977,7 @@ class MaverickParser ( Parser ):
         return localctx
 
 
-    class ModulefieldlistContext(ParserRuleContext):
+    class ClassfieldlistContext(ParserRuleContext):
         __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
@@ -2999,29 +2999,29 @@ class MaverickParser ( Parser ):
 
 
         def getRuleIndex(self):
-            return MaverickParser.RULE_modulefieldlist
+            return MaverickParser.RULE_classfieldlist
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterModulefieldlist" ):
-                listener.enterModulefieldlist(self)
+            if hasattr( listener, "enterClassfieldlist" ):
+                listener.enterClassfieldlist(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitModulefieldlist" ):
-                listener.exitModulefieldlist(self)
+            if hasattr( listener, "exitClassfieldlist" ):
+                listener.exitClassfieldlist(self)
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitModulefieldlist" ):
-                return visitor.visitModulefieldlist(self)
+            if hasattr( visitor, "visitClassfieldlist" ):
+                return visitor.visitClassfieldlist(self)
             else:
                 return visitor.visitChildren(self)
 
 
 
 
-    def modulefieldlist(self):
+    def classfieldlist(self):
 
-        localctx = MaverickParser.ModulefieldlistContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 58, self.RULE_modulefieldlist)
+        localctx = MaverickParser.ClassfieldlistContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 58, self.RULE_classfieldlist)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 370
@@ -3056,7 +3056,7 @@ class MaverickParser ( Parser ):
         return localctx
 
 
-    class ModulefunclistContext(ParserRuleContext):
+    class ClassfunclistContext(ParserRuleContext):
         __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
@@ -3071,29 +3071,29 @@ class MaverickParser ( Parser ):
 
 
         def getRuleIndex(self):
-            return MaverickParser.RULE_modulefunclist
+            return MaverickParser.RULE_classfunclist
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterModulefunclist" ):
-                listener.enterModulefunclist(self)
+            if hasattr( listener, "enterClassfunclist" ):
+                listener.enterClassfunclist(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitModulefunclist" ):
-                listener.exitModulefunclist(self)
+            if hasattr( listener, "exitClassfunclist" ):
+                listener.exitClassfunclist(self)
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitModulefunclist" ):
-                return visitor.visitModulefunclist(self)
+            if hasattr( visitor, "visitClassfunclist" ):
+                return visitor.visitClassfunclist(self)
             else:
                 return visitor.visitChildren(self)
 
 
 
 
-    def modulefunclist(self):
+    def classfunclist(self):
 
-        localctx = MaverickParser.ModulefunclistContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 60, self.RULE_modulefunclist)
+        localctx = MaverickParser.ClassfunclistContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 60, self.RULE_classfunclist)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)

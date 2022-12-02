@@ -27,7 +27,7 @@ null
 '['
 ']'
 '...'
-'module'
+'class'
 'or'
 'and'
 '<'
@@ -169,9 +169,9 @@ nameAndArgs
 args
 funcbody
 parlist
-moduleconmoduleor
-modulefieldlist
-modulefunclist
+classconstructor
+classfieldlist
+classfunclist
 field
 fieldsep
 operatorOr

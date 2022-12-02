@@ -224,15 +224,6 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#delete_module.
-    def enterDelete_module(self, ctx:MaverickParser.Delete_moduleContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#delete_module.
-    def exitDelete_module(self, ctx:MaverickParser.Delete_moduleContext):
-        pass
-
-
     # Enter a parse tree produced by MaverickParser#string_expr.
     def enterString_expr(self, ctx:MaverickParser.String_exprContext):
         pass
@@ -296,12 +287,21 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#new_module.
-    def enterNew_module(self, ctx:MaverickParser.New_moduleContext):
+    # Enter a parse tree produced by MaverickParser#new_class.
+    def enterNew_class(self, ctx:MaverickParser.New_classContext):
         pass
 
-    # Exit a parse tree produced by MaverickParser#new_module.
-    def exitNew_module(self, ctx:MaverickParser.New_moduleContext):
+    # Exit a parse tree produced by MaverickParser#new_class.
+    def exitNew_class(self, ctx:MaverickParser.New_classContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#delete_class.
+    def enterDelete_class(self, ctx:MaverickParser.Delete_classContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#delete_class.
+    def exitDelete_class(self, ctx:MaverickParser.Delete_classContext):
         pass
 
 
@@ -386,30 +386,30 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#moduleconmoduleor.
-    def enterModuleconmoduleor(self, ctx:MaverickParser.ModuleconmoduleorContext):
+    # Enter a parse tree produced by MaverickParser#classconstructor.
+    def enterClassconstructor(self, ctx:MaverickParser.ClassconstructorContext):
         pass
 
-    # Exit a parse tree produced by MaverickParser#moduleconmoduleor.
-    def exitModuleconmoduleor(self, ctx:MaverickParser.ModuleconmoduleorContext):
-        pass
-
-
-    # Enter a parse tree produced by MaverickParser#modulefieldlist.
-    def enterModulefieldlist(self, ctx:MaverickParser.ModulefieldlistContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#modulefieldlist.
-    def exitModulefieldlist(self, ctx:MaverickParser.ModulefieldlistContext):
+    # Exit a parse tree produced by MaverickParser#classconstructor.
+    def exitClassconstructor(self, ctx:MaverickParser.ClassconstructorContext):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#modulefunclist.
-    def enterModulefunclist(self, ctx:MaverickParser.ModulefunclistContext):
+    # Enter a parse tree produced by MaverickParser#classfieldlist.
+    def enterClassfieldlist(self, ctx:MaverickParser.ClassfieldlistContext):
         pass
 
-    # Exit a parse tree produced by MaverickParser#modulefunclist.
-    def exitModulefunclist(self, ctx:MaverickParser.ModulefunclistContext):
+    # Exit a parse tree produced by MaverickParser#classfieldlist.
+    def exitClassfieldlist(self, ctx:MaverickParser.ClassfieldlistContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#classfunclist.
+    def enterClassfunclist(self, ctx:MaverickParser.ClassfunclistContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#classfunclist.
+    def exitClassfunclist(self, ctx:MaverickParser.ClassfunclistContext):
         pass
 
 
