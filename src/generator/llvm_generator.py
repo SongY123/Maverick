@@ -271,11 +271,8 @@ class MVisitor(MaverickVisitor):
         self.symbol_table.func_quit()
 
 
-    def visitForequalblock(self, ctx: MaverickParser.ForequalblockContext):
+    def visitForblock(self, ctx: MaverickParser.ForequalblockContext):
         return super().visitForequalblock(ctx)
-
-    def visitForinblock(self, ctx: MaverickParser.ForinblockContext):
-        return super().visitForinblock(ctx)
 
     def visitIfblock(self, ctx: MaverickParser.IfblockContext):
         """

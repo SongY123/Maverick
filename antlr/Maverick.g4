@@ -18,8 +18,7 @@ stat
     | whileblock
     | repeatblock
     | ifblock
-    | forequalblock
-    | forinblock
+    | forblock
     | funcdef
     ;
 
@@ -55,12 +54,8 @@ elseconditionblock
     : 'else' block
     ;
 
-forequalblock
+forblock
     : 'for' (type)? NAME '=' exp ',' exp (',' exp)? 'do' block 'end'
-    ;
-
-forinblock
-    : 'for' namelist 'in' explist 'do' block 'end'
     ;
 
 funcdef

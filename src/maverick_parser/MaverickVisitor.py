@@ -64,13 +64,8 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#forequalblock.
-    def visitForequalblock(self, ctx:MaverickParser.ForequalblockContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MaverickParser#forinblock.
-    def visitForinblock(self, ctx:MaverickParser.ForinblockContext):
+    # Visit a parse tree produced by MaverickParser#forblock.
+    def visitForblock(self, ctx:MaverickParser.ForblockContext):
         return self.visitChildren(ctx)
 
 

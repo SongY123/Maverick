@@ -107,21 +107,12 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#forequalblock.
-    def enterForequalblock(self, ctx:MaverickParser.ForequalblockContext):
+    # Enter a parse tree produced by MaverickParser#forblock.
+    def enterForblock(self, ctx:MaverickParser.ForblockContext):
         pass
 
-    # Exit a parse tree produced by MaverickParser#forequalblock.
-    def exitForequalblock(self, ctx:MaverickParser.ForequalblockContext):
-        pass
-
-
-    # Enter a parse tree produced by MaverickParser#forinblock.
-    def enterForinblock(self, ctx:MaverickParser.ForinblockContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#forinblock.
-    def exitForinblock(self, ctx:MaverickParser.ForinblockContext):
+    # Exit a parse tree produced by MaverickParser#forblock.
+    def exitForblock(self, ctx:MaverickParser.ForblockContext):
         pass
 
 
