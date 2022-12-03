@@ -422,15 +422,6 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#fieldsep.
-    def enterFieldsep(self, ctx:MaverickParser.FieldsepContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#fieldsep.
-    def exitFieldsep(self, ctx:MaverickParser.FieldsepContext):
-        pass
-
-
     # Enter a parse tree produced by MaverickParser#operatorOr.
     def enterOperatorOr(self, ctx:MaverickParser.OperatorOrContext):
         pass

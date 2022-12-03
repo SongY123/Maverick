@@ -1,6 +1,6 @@
 class classname
-  int a
-  int b
+  int a=0
+  int b=0
   function int f(int val)
     a = val
   end

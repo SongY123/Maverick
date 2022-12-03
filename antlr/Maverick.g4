@@ -140,22 +140,19 @@ parlist
     ;
 
 classconstructor
-    : 'class' NAME classfieldlist? classfunclist? 'end'
+    : 'class' NAME  classfieldlist classfunclist 'end'
     ;
 
 classfieldlist
-    : field (fieldsep field)* fieldsep?
+    : field*
     ;
+
 classfunclist
-    : funcdef+
+    : funcdef*
     ;
 
 field
-    : type NAME ('=' exp)?
-    ;
-
-fieldsep
-    : ','?
+    : type NAME ('=' (string | number))?
     ;
 
 operatorOr

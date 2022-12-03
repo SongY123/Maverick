@@ -29,8 +29,11 @@ class MVisitor(MaverickVisitor):
 
         self.symbol_table = SymbolTable()
 
-        # used to store module object
-        self.module_list = dict()
+        # used to store class info
+        # "classname": {fiel_dict: {"name" : type}, func_dict: {"name" : ir.Function}
+        self.class_dict = dict()
+        # tell visitfuncdef if we need to pass this pointer to function
+        self.class_func_define = False
 
         self.need_load = True
 
@@ -101,6 +104,47 @@ class MVisitor(MaverickVisitor):
 
     def visitBlock(self, ctx: MaverickParser.BlockContext):
         return super().visitBlock(ctx)
+
+    def visitNew_class(self, ctx: MaverickParser.New_classContext):
+        return super().visitNew_class(ctx)
+
+    def visitDelete_class(self, ctx: MaverickParser.Delete_classContext):
+        return super().visitDelete_class(ctx)
+
+    def visitClassconstructor(self, ctx: MaverickParser.ClassconstructorContext):
+        classname = ctx.getChild(1).getText()
+        if self.class_dict.get(classname) is not None:
+            raise ClassNameDuplicateException(classname)
+        field_dict = self.visit(ctx.getChild(2))
+        self.class_func_define = True
+        func_dict = self.visit(ctx.getChild(3))
+        self.class_func_define = False
+        class_ = ClassType.construct(classname, field_dict)
+        llvm_class = ir.LiteralStructType([value for value in field_dict.values()])
+        named_class = self.module.context.get_identified_type(classname)
+        named_class.packed = True
+        named_class.set_body(*llvm_class)
+        self.class_dict[classname] = class_
+
+    def visitClassfieldlist(self, ctx: MaverickParser.ClassfieldlistContext):
+        field_dict = dict()
+        for i in range(ctx.getChildCount()):
+            field = self.visit(ctx.getChild(i))
+            field_dict[field["Name"]] = field["Type"]
+        return field_dict
+
+    def visitField(self, ctx: MaverickParser.FieldContext):
+        var_type = self.visitType(ctx.getChild(0))
+        var_id = ctx.getChild(1).getText()
+        if ctx.getChildCount() == 4:
+            val = self.visit(ctx.getChild(3))
+        return {
+            "Type": var_type,
+            "Name": var_id
+        }
+
+    def visitClassfunclist(self, ctx: MaverickParser.ClassfunclistContext):
+        return super().visitClassfunclist(ctx)
 
     def visitStat(self, ctx: MaverickParser.StatContext):
         if ctx.getChild(0).getText() == ';':
@@ -675,8 +719,6 @@ def generate(input_filename, output_filename, triple, data_layout):
     stream = CommonTokenStream(lexer)
     parser = MaverickParser(stream)
     parser.removeErrorListeners()
-    # errorListener = syntaxErrorListener()
-    # parser.addErrorListener(errorListener)
 
     tree = parser.chunk()
     v = MVisitor(triple, data_layout)

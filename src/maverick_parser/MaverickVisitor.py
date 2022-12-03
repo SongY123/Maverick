@@ -239,11 +239,6 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#fieldsep.
-    def visitFieldsep(self, ctx:MaverickParser.FieldsepContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MaverickParser#operatorOr.
     def visitOperatorOr(self, ctx:MaverickParser.OperatorOrContext):
         return self.visitChildren(ctx)

@@ -24,6 +24,13 @@ class FunctionNameDuplicateException(BaseException):
     def __str__(self):
         return f"Function name \"" + self.funcname + "\" duplicate."
 
+class ClassNameDuplicateException(BaseException):
+    def __init__(self, classname):
+        self.classname = classname
+
+    def __str__(self):
+        return f"Class name \"" + self.classname + "\" duplicate."
+
 class TypeMisatchException(BaseException):
     def __init__(self, expr1, expr2):
         self.expr1 = expr1
