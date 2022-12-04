@@ -287,30 +287,30 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MaverickParser#new_class.
-    def enterNew_class(self, ctx:MaverickParser.New_classContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#new_class.
-    def exitNew_class(self, ctx:MaverickParser.New_classContext):
-        pass
-
-
-    # Enter a parse tree produced by MaverickParser#delete_class.
-    def enterDelete_class(self, ctx:MaverickParser.Delete_classContext):
-        pass
-
-    # Exit a parse tree produced by MaverickParser#delete_class.
-    def exitDelete_class(self, ctx:MaverickParser.Delete_classContext):
-        pass
-
-
     # Enter a parse tree produced by MaverickParser#number_expr.
     def enterNumber_expr(self, ctx:MaverickParser.Number_exprContext):
         pass
 
     # Exit a parse tree produced by MaverickParser#number_expr.
     def exitNumber_expr(self, ctx:MaverickParser.Number_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#newclass.
+    def enterNewclass(self, ctx:MaverickParser.NewclassContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#newclass.
+    def exitNewclass(self, ctx:MaverickParser.NewclassContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#deleteclass.
+    def enterDeleteclass(self, ctx:MaverickParser.DeleteclassContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#deleteclass.
+    def exitDeleteclass(self, ctx:MaverickParser.DeleteclassContext):
         pass
 
 

@@ -2,11 +2,13 @@ class classname
   int a=0
   int b=0
   function int f(int val)
-    a = val
+    b = val
+    return b
   end
 end
 
-newclass = new classname()
-newclass.a=1
+classname newclass = new classname()
+newclass.b=1
+printf("%d\n", newclass.b)
 newclass.f(2)
-printf("%d\n", newclass.a)
+printf("%d\n", newclass.b)

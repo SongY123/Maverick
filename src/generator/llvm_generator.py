@@ -33,9 +33,10 @@ class MVisitor(MaverickVisitor):
         # "classname": {fiel_dict: {"name" : type}, func_dict: {"name" : ir.Function}
         self.class_dict = dict()
         # tell visitfuncdef if we need to pass this pointer to function
-        self.class_func_define = False
-
+        self.this_class_name = None
+        self.this_func_name = None
         self.need_load = True
+        self.function_call = False
 
         self.constants = 0
 
@@ -105,26 +106,44 @@ class MVisitor(MaverickVisitor):
     def visitBlock(self, ctx: MaverickParser.BlockContext):
         return super().visitBlock(ctx)
 
-    def visitNew_class(self, ctx: MaverickParser.New_classContext):
-        return super().visitNew_class(ctx)
+    def visitNewclass(self, ctx: MaverickParser.NewclassContext):
+        classname = ctx.getChild(0).getText()
+        varname = ctx.getChild(1).getText()
+        var = self.builder_list[-1].alloca(self.class_dict[classname]["named_class"], name=varname)
+        self.symbol_table.insert_item(varname, {'Type': self.class_dict[classname]["named_class"],
+                'Name': var})
 
-    def visitDelete_class(self, ctx: MaverickParser.Delete_classContext):
-        return super().visitDelete_class(ctx)
+        return var
+
+
+    def visitDeleteclass(self, ctx: MaverickParser.DeleteclassContext):
+        return super().visitDeleteclass(ctx)
 
     def visitClassconstructor(self, ctx: MaverickParser.ClassconstructorContext):
         classname = ctx.getChild(1).getText()
+
+        # visit field
         if self.class_dict.get(classname) is not None:
             raise ClassNameDuplicateException(classname)
         field_dict = self.visit(ctx.getChild(2))
-        self.class_func_define = True
-        func_dict = self.visit(ctx.getChild(3))
-        self.class_func_define = False
-        class_ = ClassType.construct(classname, field_dict)
+
+        # class_ = ClassType.construct(classname, field_dict)
         llvm_class = ir.LiteralStructType([value for value in field_dict.values()])
         named_class = self.module.context.get_identified_type(classname)
         named_class.packed = True
         named_class.set_body(*llvm_class)
-        self.class_dict[classname] = class_
+        self.class_dict[classname] = {
+            "field_dict": field_dict,
+            "named_class": named_class
+        }
+
+        # TODO create default constructor
+
+        # visit class function
+        self.this_class_name = classname
+        func_dict = self.visit(ctx.getChild(3))
+        self.this_class_name = None
+
 
     def visitClassfieldlist(self, ctx: MaverickParser.ClassfieldlistContext):
         field_dict = dict()
@@ -145,6 +164,7 @@ class MVisitor(MaverickVisitor):
 
     def visitClassfunclist(self, ctx: MaverickParser.ClassfunclistContext):
         return super().visitClassfunclist(ctx)
+
 
     def visitStat(self, ctx: MaverickParser.StatContext):
         if ctx.getChild(0).getText() == ';':
@@ -194,7 +214,23 @@ class MVisitor(MaverickVisitor):
         val = self.visit(ctx.getChild(2))
         need_load_cache = self.need_load
         self.need_load = False
-        var = self.visit(ctx.getChild(0))
+        zero = ir.Constant(int32, 0)
+        if self.this_class_name is not None:
+            offset = 0
+            var_name = ctx.getChild(0).getText()
+            for name, type in self.class_dict[self.this_class_name]['field_dict'].items():
+                if name != var_name:
+                    offset += 1
+                else:
+                    break
+            var = {
+                'type': int32,
+                'const': False,
+                'name': builder.gep(self.func_list[self.this_func_name].args[0], [zero, ir.Constant(type, offset)])
+            }
+            var["name"].type = ir.PointerType(self.class_dict[self.this_class_name]['field_dict'][var_name])
+        else:
+            var = self.visit(ctx.getChild(0))
         self.need_load = need_load_cache
         builder.store(val['name'], var['name'])
         return {'type': var['type'], 'name': builder.load(var['name'])}
@@ -203,13 +239,21 @@ class MVisitor(MaverickVisitor):
         """
         funcdef: 'function' type funcname '(' parlist? ')' funcbody
         """
-        # funcname
-        func_name = ctx.getChild(2).getText()
+        if self.this_class_name is not None:
+            func_name = self.this_class_name + '.' + ctx.getChild(2).getText()
+        else:
+            func_name = ctx.getChild(2).getText()
+        self.this_func_name = func_name
         if func_name in self.func_list:
             raise FunctionNameDuplicateException(func_name)
         return_type = self.visit(ctx.getChild(1))
         # func params
         para_list = self.visit(ctx.getChild(4))
+        if self.this_class_name is not None:
+            para_list.insert(0, {
+                "name": "this",
+                "type": ir.PointerType(self.class_dict[self.this_class_name]["named_class"])}
+                             )
         type_list = []
         for i in range(len(para_list)):
             type_list.append(para_list[i]['type'])
@@ -224,7 +268,11 @@ class MVisitor(MaverickVisitor):
         self.builder_list.append(builder)
         self.cur_func = func_name
         self.symbol_table.func_enter()
-        for i in range(len(para_list)):
+        if self.this_class_name is not None:
+            begin_i = 1
+        else:
+            begin_i = 0
+        for i  in range(begin_i, len(para_list)):
             mvar = builder.alloca(para_list[i]['type'])
             builder.store(llvm_func.args[i], mvar)
             self.symbol_table.insert_item(para_list[i]['name'], {'Type': para_list[i]['type'], 'Name': mvar})
@@ -233,6 +281,7 @@ class MVisitor(MaverickVisitor):
         self.block_list.pop()
         self.builder_list.pop()
         self.symbol_table.func_quit()
+        self.this_func_name = None
 
     def visitParlist(self, ctx: MaverickParser.ParlistContext):
         """
@@ -552,10 +601,35 @@ class MVisitor(MaverickVisitor):
 
     def visitVar(self, ctx: MaverickParser.VarContext):
         id = ctx.getText()
-        if self.func_list.get(id) is not None:
+        zero = ir.Constant(int32, 0)
+        if self.function_call:
+            if self.func_list.get(id) is not None:
+                return {
+                    'name': id
+                }
+            else:
+                var_name = id.split('.')[0]
+                class_ = self.symbol_table.get_item(var_name)
+                return {
+                    'name': class_['Type'].name + '.' + id.split('.')[1]
+                }
+        if id.find('.') != -1:
+            var_name = id.split('.')[0]
+            mem_name= id.split('.')[1]
+            class_ = self.symbol_table.get_item(var_name)
+            offset = 0
+            for name, type in self.class_dict[class_['Type'].name]['field_dict'].items():
+                if name != mem_name:
+                    offset += 1
+                else:
+                    mem_type = type
+                    break
             return {
-                'name': id
+                'type': mem_type.as_pointer(),
+                "const": False,
+                'name': self.builder_list[-1].gep(self.symbol_table.get_item(var_name)['Name'], [zero, ir.Constant(mem_type, offset)])
             }
+
         if not self.symbol_table.has_item(id):
             return {
                 'type': int32,
@@ -649,11 +723,16 @@ class MVisitor(MaverickVisitor):
             }
 
     def visitSelffunctioncall(self, ctx: MaverickParser.SelffunctioncallContext):
+        self.function_call = True
         func_name = self.visit(ctx.getChild(0))['name']
+        self.function_call = False
         func = self.func_list[func_name]
         args = self.visit(ctx.getChild(1))
         builder = self.builder_list[-1]
         arg_list = []
+        if func_name.find('.') != -1:
+            var_name = ctx.getChild(0).getText().split('.')[0]
+            arg_list.append(self.symbol_table.get_item(var_name)['Name'])
         for arg in args:
             arg_list.append(arg['name'])
         return {
@@ -686,6 +765,8 @@ class MVisitor(MaverickVisitor):
         length = ctx.getChildCount()
         for i in range(4, length - 1, 2):
             var_expr = self.visit(ctx.getChild(i))
+            if var_expr['type'].is_pointer:
+                var_expr['name'] = builder.load(var_expr['name'])
             arg_list.append(var_expr['name'])
         return {
             'type': int32,

@@ -164,18 +164,18 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MaverickParser#new_class.
-    def visitNew_class(self, ctx:MaverickParser.New_classContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MaverickParser#delete_class.
-    def visitDelete_class(self, ctx:MaverickParser.Delete_classContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MaverickParser#number_expr.
     def visitNumber_expr(self, ctx:MaverickParser.Number_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#newclass.
+    def visitNewclass(self, ctx:MaverickParser.NewclassContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#deleteclass.
+    def visitDeleteclass(self, ctx:MaverickParser.DeleteclassContext):
         return self.visitChildren(ctx)
 
 

@@ -20,6 +20,8 @@ stat
     | forblock
     | funcdef
     | classconstructor
+    | newclass
+    | deleteclass
     ;
 
 varinit
@@ -100,8 +102,14 @@ exp
     | exp operatorAnd exp                   # and_expr
     | exp operatorOr exp                    # or_expr
     | exp operatorBitwise exp               # bitwise_expr
-    | 'new' NAME '(' ')'                    # new_class
-    | 'delete' NAME                         # delete_class
+    ;
+
+newclass
+    : type NAME '=' 'new' NAME '(' ')'
+    ;
+
+deleteclass
+    : 'delete' NAME
     ;
 
 functioncall
