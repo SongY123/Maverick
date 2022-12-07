@@ -70,7 +70,7 @@ funcdef
     ;
 
 laststat
-    : 'return' exp? | break | continue ';'?
+    : 'reteurn' exp? | break | continue ';'?
     ;
 
 funcname

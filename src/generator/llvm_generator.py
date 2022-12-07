@@ -730,7 +730,7 @@ class MVisitor(MaverickVisitor):
         return {
             'type': float,
             'const': True,
-            'name': ir.Constant(float, int(ctx.getText()))
+            'name': ir.Constant(float, float(ctx.getText()))
         }
 
     def visitString(self, ctx: MaverickParser.StringContext):
