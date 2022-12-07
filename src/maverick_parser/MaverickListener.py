@@ -1,4 +1,4 @@
-# Generated from /Users/songyang/Desktop/buaa/课程/程序设计语言/Maverick/antlr/Maverick.g4 by ANTLR 4.11.1
+# Generated from D:/projects/java/grammars-v4/maverick\Maverick.g4 by ANTLR 4.11.1
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .MaverickParser import MaverickParser
@@ -41,6 +41,15 @@ class MaverickListener(ParseTreeListener):
 
     # Exit a parse tree produced by MaverickParser#varinit.
     def exitVarinit(self, ctx:MaverickParser.VarinitContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#arrayinit.
+    def enterArrayinit(self, ctx:MaverickParser.ArrayinitContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#arrayinit.
+    def exitArrayinit(self, ctx:MaverickParser.ArrayinitContext):
         pass
 
 
@@ -287,6 +296,15 @@ class MaverickListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by MaverickParser#arrayitem_expr.
+    def enterArrayitem_expr(self, ctx:MaverickParser.Arrayitem_exprContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#arrayitem_expr.
+    def exitArrayitem_expr(self, ctx:MaverickParser.Arrayitem_exprContext):
+        pass
+
+
     # Enter a parse tree produced by MaverickParser#number_expr.
     def enterNumber_expr(self, ctx:MaverickParser.Number_exprContext):
         pass
@@ -320,6 +338,15 @@ class MaverickListener(ParseTreeListener):
 
     # Exit a parse tree produced by MaverickParser#functioncall.
     def exitFunctioncall(self, ctx:MaverickParser.FunctioncallContext):
+        pass
+
+
+    # Enter a parse tree produced by MaverickParser#arrayitem.
+    def enterArrayitem(self, ctx:MaverickParser.ArrayitemContext):
+        pass
+
+    # Exit a parse tree produced by MaverickParser#arrayitem.
+    def exitArrayitem(self, ctx:MaverickParser.ArrayitemContext):
         pass
 
 

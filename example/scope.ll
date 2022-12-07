@@ -1,8 +1,8 @@
 ; ModuleID = ""
-target triple = "arm64-apple-darwin22.1.0"
+target triple = "x86_64-pc-linux-gnu"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 
-define void @"main"() 
+define void @"main"()
 {
 main.entry:
   %".2" = load i32, i32* @"a"
@@ -17,12 +17,12 @@ main.entry:
   ret void
 }
 
-declare i32 @"printf"(i8* %".1", ...) 
+declare i32 @"printf"(i8* %".1", ...)
 
-declare i32 @"scanf"(i8* %".1", ...) 
+declare i32 @"scanf"(i8* %".1", ...)
 
 @"a" = internal global i32 1
-define i32 @"compute"(i32 %"a") 
+define i32 @"compute"(i32 %"a")
 {
 compute.entry:
   %".3" = alloca i32

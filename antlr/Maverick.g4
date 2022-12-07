@@ -11,6 +11,7 @@ block
 stat
     : ';'
     | varinit
+    | arrayinit
     | varassign
     | functioncall
     | break
@@ -28,8 +29,12 @@ varinit
     : type varlist '=' explist
     ;
 
+arrayinit
+    : type NAME '[' myINT ']'
+    ;
+
 varassign
-    : var '=' exp
+    : (arrayitem | var) '=' exp
     ;
 
 whileblock
@@ -95,6 +100,7 @@ exp
     | string                                # string_expr
     | functioncall                          # functioncall_expr
     | varOrExp                              # varorexp_expr
+    | arrayitem                             # arrayitem_expr
     | operatorUnary exp                     # unary_expr
     | exp operatorMulDivMod exp             # muldivmod_expr
     | exp operatorAddSub exp                # addsub_expr
@@ -117,6 +123,9 @@ functioncall
     | scanfFunction
     | selffunctioncall
     ;
+
+arrayitem
+    : NAME '[' exp ']';
 
 varOrExp
     : var | '(' exp ')'

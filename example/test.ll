@@ -1,8 +1,8 @@
 ; ModuleID = ""
-target triple = "arm64-apple-darwin22.1.0"
+target triple = "x86_64-pc-linux-gnu"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 
-define void @"main"() 
+define void @"main"()
 {
 main.entry:
   br label %".2"
@@ -35,9 +35,9 @@ main.entry:
   br label %".15"
 }
 
-declare i32 @"printf"(i8* %".1", ...) 
+declare i32 @"printf"(i8* %".1", ...)
 
-declare i32 @"scanf"(i8* %".1", ...) 
+declare i32 @"scanf"(i8* %".1", ...)
 
 @"i" = internal global i32 0
 @".str0" = constant [4 x i8] c"%d\0a\00"

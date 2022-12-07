@@ -209,6 +209,43 @@ class MVisitor(MaverickVisitor):
             else:
                 raise VariableInitializationException(id)
 
+    def visitArrayinit(self, ctx: MaverickParser.ArrayinitContext):
+        type = self.visit(ctx.getChild(0))
+        id = ctx.getChild(1).getText()
+        length = int(ctx.getChild(3).getText())
+        if self.symbol_table.is_global() == True:
+            mvar = ir.GlobalVariable(self.module, ir.ArrayType(type, length), name=id)
+            mvar.linkage = 'internal'
+        else:
+            mvar = self.builder_list[-1].alloca(ir.ArrayType(type, length), name=id)
+        self.symbol_table.insert_item(id, {'Type': ir.ArrayType(type, length), 'Name': mvar})
+        return
+
+    def visitArrayitem(self, ctx: MaverickParser.ArrayitemContext):
+        require_load = self.need_load
+        self.need_load = False
+        res = self.visit(ctx.getChild(0))
+        self.need_load = require_load
+
+        if isinstance(res['type'], ir.types.ArrayType):
+            builder = self.builder_list[-1]
+            require_load = self.need_load
+            self.need_load = True
+            index = self.visit(ctx.getChild(2))  # subscript
+            self.need_load = require_load
+            return_dict = {
+                'type': res['type'].element,
+                'const': False
+            }
+            zero = ir.Constant(int32, 0)
+            return_dict["name"] = builder.gep(res['name'], [zero, index['name']], inbounds=True)
+            if self.need_load:
+                return_dict["name"] = builder.load(return_dict["name"])
+            return return_dict
+        else:
+            print("类型错误:" + ctx.getText())
+            exit(0)
+
     def visitVarassign(self, ctx: MaverickParser.VarassignContext):
         builder = self.builder_list[-1]
         val = self.visit(ctx.getChild(2))

@@ -1,4 +1,4 @@
-# Generated from /Users/songyang/Desktop/buaa/课程/程序设计语言/Maverick/antlr/Maverick.g4 by ANTLR 4.11.1
+# Generated from D:/projects/java/grammars-v4/maverick\Maverick.g4 by ANTLR 4.11.1
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .MaverickParser import MaverickParser
@@ -26,6 +26,11 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#varinit.
     def visitVarinit(self, ctx:MaverickParser.VarinitContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#arrayinit.
+    def visitArrayinit(self, ctx:MaverickParser.ArrayinitContext):
         return self.visitChildren(ctx)
 
 
@@ -164,6 +169,11 @@ class MaverickVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by MaverickParser#arrayitem_expr.
+    def visitArrayitem_expr(self, ctx:MaverickParser.Arrayitem_exprContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by MaverickParser#number_expr.
     def visitNumber_expr(self, ctx:MaverickParser.Number_exprContext):
         return self.visitChildren(ctx)
@@ -181,6 +191,11 @@ class MaverickVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MaverickParser#functioncall.
     def visitFunctioncall(self, ctx:MaverickParser.FunctioncallContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MaverickParser#arrayitem.
+    def visitArrayitem(self, ctx:MaverickParser.ArrayitemContext):
         return self.visitChildren(ctx)
 
 
